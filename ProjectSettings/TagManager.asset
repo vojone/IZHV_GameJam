@@ -11,7 +11,7 @@ TagManager:
   - 
   - Water
   - UI
-  - 
+  - Blocking
   - 
   - 
   - 
@@ -40,4 +40,16 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Floor
+    uniqueID: 1651565695
+    locked: 0
+  - name: Walls
+    uniqueID: 3831643583
+    locked: 0
+  - name: Characters
+    uniqueID: 1938278989
+    locked: 0
+  - name: Items
+    uniqueID: 49433721
     locked: 0
