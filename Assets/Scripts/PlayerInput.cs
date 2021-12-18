@@ -25,21 +25,39 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     ""maps"": [
         {
             ""name"": ""Player"",
-            ""id"": ""90c55cd0-c165-445a-b8e9-eb7abbef7760"",
+            ""id"": ""bf4aca31-6fa1-4e08-997e-5b148675e960"",
             ""actions"": [
                 {
                     ""name"": ""Move"",
                     ""type"": ""Value"",
-                    ""id"": ""ddb6ea32-64dd-4f8a-8c72-a396dc09b47d"",
+                    ""id"": ""d99fc289-1f4e-49bf-8c2e-05428e6577fa"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
                 },
                 {
+                    ""name"": ""Look"",
+                    ""type"": ""Value"",
+                    ""id"": ""84054852-6f3e-44fa-8863-a72818dc4776"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Charge"",
+                    ""type"": ""Button"",
+                    ""id"": ""c0b1a43b-1b4a-481e-adf8-c1782c5f3fb9"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""Fire"",
                     ""type"": ""Button"",
-                    ""id"": ""7e6d2dd6-30bd-43a3-a2a9-584915f7525e"",
+                    ""id"": ""e257b044-b2e1-4521-8fbf-b43a115ac377"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -181,12 +199,45 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""c1f7a91b-d0fd-4a62-997e-7fb9b69bf235"",
+                    ""path"": ""<Gamepad>/rightStick"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""Look"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8c8e490b-c610-4785-884f-f04217b23ca4"",
+                    ""path"": ""<Pointer>/delta"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse;Touch"",
+                    ""action"": ""Look"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3e5f5442-8668-4b27-a940-df99bad7e831"",
+                    ""path"": ""<Joystick>/{Hatswitch}"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Joystick"",
+                    ""action"": ""Look"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""143bb1cd-cc10-4eca-a2f0-a3664166fe91"",
                     ""path"": ""<Gamepad>/rightTrigger"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
-                    ""action"": ""Fire"",
+                    ""action"": ""Charge"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -197,7 +248,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""Fire"",
+                    ""action"": ""Charge"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -208,7 +259,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Touch"",
-                    ""action"": ""Fire"",
+                    ""action"": ""Charge"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -219,13 +270,68 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Joystick"",
-                    ""action"": ""Fire"",
+                    ""action"": ""Charge"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
                     ""id"": ""8255d333-5683-4943-a58a-ccb207ff1dce"",
+                    ""path"": ""<XRController>/{PrimaryAction}"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""XR"",
+                    ""action"": ""Charge"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f1cf4c6b-4da2-48c0-8017-fb918ca668a3"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""Fire"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5dbdffa0-b314-4b39-9ddd-8982094a693a"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Fire"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5a1dfca4-be76-446f-9c5a-e25129e3a876"",
+                    ""path"": ""<Touchscreen>/primaryTouch/tap"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Touch"",
+                    ""action"": ""Fire"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""aa802b85-054b-45cf-afa8-b2580d8f6186"",
+                    ""path"": ""<Joystick>/trigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Joystick"",
+                    ""action"": ""Fire"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""640cc207-f5b4-4a3a-9725-5b244022a608"",
                     ""path"": ""<XRController>/{PrimaryAction}"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -238,12 +344,12 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         },
         {
             ""name"": ""UI"",
-            ""id"": ""7e49c945-9866-48d4-86ef-506abbfff8d0"",
+            ""id"": ""a4fe8e65-4aa0-4cbb-9fb8-79ba395094e3"",
             ""actions"": [
                 {
                     ""name"": ""Navigate"",
                     ""type"": ""PassThrough"",
-                    ""id"": ""1080a7ef-646c-4c12-b5df-c367e889bb81"",
+                    ""id"": ""f20fcff9-0aeb-43c1-bc93-dc89199f0c27"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -252,7 +358,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""Submit"",
                     ""type"": ""Button"",
-                    ""id"": ""2099e5ec-742c-4510-8a25-f5a00983540f"",
+                    ""id"": ""a0a9be74-23c1-4b36-847f-df6a83e7a62f"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -261,7 +367,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""Cancel"",
                     ""type"": ""Button"",
-                    ""id"": ""1743b277-c2b2-4461-b92b-e37c516cdaf8"",
+                    ""id"": ""226c850a-4ea1-4d16-a04b-15a47cadc6be"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -270,7 +376,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""Point"",
                     ""type"": ""PassThrough"",
-                    ""id"": ""23b2b80f-aefe-4067-8b5d-0d6d614ff83e"",
+                    ""id"": ""7594aee1-9cf4-486e-8528-bac064b6b301"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -279,7 +385,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""Click"",
                     ""type"": ""PassThrough"",
-                    ""id"": ""a8c2869f-eed7-4d3f-83ec-37e52529f0ac"",
+                    ""id"": ""9befe3b2-def6-4fea-b6b6-650b07f0cba4"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -288,7 +394,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""ScrollWheel"",
                     ""type"": ""PassThrough"",
-                    ""id"": ""0709f949-14ff-4d31-8785-c8c26fe8e842"",
+                    ""id"": ""ed08a634-964e-4fbd-8d15-beba2bdfedd2"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -297,7 +403,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""MiddleClick"",
                     ""type"": ""PassThrough"",
-                    ""id"": ""ce259b03-e019-4ebd-8c1a-bd12f9543213"",
+                    ""id"": ""d208b1a5-eaa0-461e-bcf2-df9a51b6ee4e"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -306,7 +412,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""RightClick"",
                     ""type"": ""PassThrough"",
-                    ""id"": ""ec1eae32-80b8-43fa-a0f1-08f8fe8877d2"",
+                    ""id"": ""892466f3-fc40-4480-a551-e9ae1be894f2"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -315,7 +421,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""TrackedDevicePosition"",
                     ""type"": ""PassThrough"",
-                    ""id"": ""df2732d8-d327-41e1-b5e0-0a1964e4bd0a"",
+                    ""id"": ""84ed671e-f11d-4388-aeea-c8da05dcd6e7"",
                     ""expectedControlType"": ""Vector3"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -324,7 +430,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""TrackedDeviceOrientation"",
                     ""type"": ""PassThrough"",
-                    ""id"": ""b4dc98c1-eceb-4227-880b-d66e61fae41f"",
+                    ""id"": ""dcc3fca2-8fed-4155-ab62-4cafd4da6f89"",
                     ""expectedControlType"": ""Quaternion"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -819,6 +925,8 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         // Player
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
+        m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
+        m_Player_Charge = m_Player.FindAction("Charge", throwIfNotFound: true);
         m_Player_Fire = m_Player.FindAction("Fire", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
@@ -892,12 +1000,16 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Player;
     private IPlayerActions m_PlayerActionsCallbackInterface;
     private readonly InputAction m_Player_Move;
+    private readonly InputAction m_Player_Look;
+    private readonly InputAction m_Player_Charge;
     private readonly InputAction m_Player_Fire;
     public struct PlayerActions
     {
         private @PlayerInput m_Wrapper;
         public PlayerActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_Player_Move;
+        public InputAction @Look => m_Wrapper.m_Player_Look;
+        public InputAction @Charge => m_Wrapper.m_Player_Charge;
         public InputAction @Fire => m_Wrapper.m_Player_Fire;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
@@ -911,6 +1023,12 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @Move.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMove;
                 @Move.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMove;
                 @Move.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMove;
+                @Look.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLook;
+                @Look.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLook;
+                @Look.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLook;
+                @Charge.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCharge;
+                @Charge.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCharge;
+                @Charge.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCharge;
                 @Fire.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFire;
                 @Fire.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFire;
                 @Fire.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFire;
@@ -921,6 +1039,12 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @Move.started += instance.OnMove;
                 @Move.performed += instance.OnMove;
                 @Move.canceled += instance.OnMove;
+                @Look.started += instance.OnLook;
+                @Look.performed += instance.OnLook;
+                @Look.canceled += instance.OnLook;
+                @Charge.started += instance.OnCharge;
+                @Charge.performed += instance.OnCharge;
+                @Charge.canceled += instance.OnCharge;
                 @Fire.started += instance.OnFire;
                 @Fire.performed += instance.OnFire;
                 @Fire.canceled += instance.OnFire;
@@ -1081,6 +1205,8 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     public interface IPlayerActions
     {
         void OnMove(InputAction.CallbackContext context);
+        void OnLook(InputAction.CallbackContext context);
+        void OnCharge(InputAction.CallbackContext context);
         void OnFire(InputAction.CallbackContext context);
     }
     public interface IUIActions

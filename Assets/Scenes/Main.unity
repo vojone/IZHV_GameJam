@@ -214,6 +214,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 646329568, guid: d46c2a7592a66924c9dffc0f214e12c0, type: 3}
+      propertyPath: cursorDefault
+      value: 
+      objectReference: {fileID: 2800000, guid: 08c97a7493c0d004ca605eab616717ad, type: 3}
+    - target: {fileID: 646329569, guid: d46c2a7592a66924c9dffc0f214e12c0, type: 3}
+      propertyPath: m_DefaultControlScheme
+      value: Keyboard&Mouse
+      objectReference: {fileID: 0}
     - target: {fileID: 2570523571862779865, guid: d46c2a7592a66924c9dffc0f214e12c0, type: 3}
       propertyPath: m_RootOrder
       value: 2

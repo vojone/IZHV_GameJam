@@ -17,12 +17,20 @@ public class Player : MonoBehaviour
 
     public bool headingRight = true;
 
+    public Texture2D cursorDefault;
+
+    public Texture2D cursorSpellActive;
+
+    public Texture2D cursorInfo;
+
     /// <summary>
     /// Main RigidBody of the player model.
     /// </summary>
     private Rigidbody2D rigidBody;
 
     private Vector2 move;
+
+    private Vector2 look;
 
     private float movementSpeed;
 
@@ -34,8 +42,11 @@ public class Player : MonoBehaviour
     void Awake()
     {
         controls = new PlayerInput();
+
         controls.Player.Move.performed += ctx => move = ctx.ReadValue<Vector2>();
         controls.Player.Move.canceled += ctx => move = Vector2.zero;
+
+        Cursor.SetCursor(cursorDefault, Vector2.zero, CursorMode.Auto);
     }
  
     private void OnEnable() {
@@ -44,6 +55,27 @@ public class Player : MonoBehaviour
     private void OnDisable()
     {
         controls.Player.Disable();
+    }
+
+    private void OnCharge() {
+        Cursor.SetCursor(cursorSpellActive, Vector2.zero, CursorMode.Auto);
+
+        //Charging spell penalization
+        speed = speed / 2;
+    }
+
+    private void onFire() {
+        Cursor.SetCursor(cursorDefault, Vector2.zero, CursorMode.Auto);
+
+        var cursorPos = Mouse.current.position.ReadValue();
+        var spellDirection = new Vector3(cursorPos.x, cursorPos.y, 0.0f);
+
+        //Normalize direction of spell
+        spellDirection = spellDirection - transform.position;
+        spellDirection = spellDirection.normalized;
+
+        //Charging spell penalization removal
+        speed *= 2;
     }
 
     void Start()
@@ -68,7 +100,7 @@ public class Player : MonoBehaviour
         
         transform.Translate(movement);
 
-        movementSpeed = move.magnitude;
+        movementSpeed = movement;
     }
 
     void UpdateCharacter() {
@@ -92,7 +124,6 @@ public class Player : MonoBehaviour
 			transform.localScale = new Vector3(-1.0f, 1.0f, 1.0f);
 		}
 
-        Debug.Log(movementSpeed);
         animator.SetFloat("Speed", movementSpeed);
 		animator.SetBool("TakingDmg", takingDmg);
     }
