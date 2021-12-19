@@ -111,7 +111,7 @@ BoxCollider2D:
   m_AutoTiling: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
-  m_EdgeRadius: 5
+  m_EdgeRadius: 0.1
 --- !u!114 &3385093569320067738
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -126,6 +126,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   path: Fireball
   speed: 5
+  spell_size: 0.2
+  spell_dmg: 1
+  parentTag: 
+  positionCorrection: {x: 0.5, y: 0, z: 0}
   maxLifetime: 5
-  changingInterval: 0.25
+  changingInterval: 0.15
   shootingDirection: {x: 1, y: 1}

@@ -18,10 +18,12 @@ public class Wand : MonoBehaviour
         
     }
 
-    public void Fire(Vector3 position, Vector2 direction) {
+    public void Fire(Vector3 position, Vector2 direction, int author) {
         //Debug.Log(direction);
 
         var spell = Instantiate(spellPrefab, position, Quaternion.identity);
+
         spell.GetComponent<Spell>().shootingDirection = new Vector2(direction.x, direction.y);
+        spell.GetComponent<Spell>().parentTag = "Player";
     }
 }

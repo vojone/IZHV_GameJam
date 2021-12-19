@@ -90,7 +90,7 @@ public class Player : MonoBehaviour
         //Normalize direction of spell
         spellDirection = spellDirection.normalized;
 
-        wand.GetComponent<Wand>().Fire(position, spellDirection);
+        wand.GetComponent<Wand>().Fire(position, spellDirection, gameObject.transform.GetInstanceID());
 
         //Charging spell penalization removal
         speed *= chargingSpellHandicap;

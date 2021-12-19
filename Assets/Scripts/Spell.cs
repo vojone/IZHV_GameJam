@@ -8,6 +8,14 @@ public class Spell : MonoBehaviour
 
     public float speed = 5.0f;
 
+    public float spell_size = 0.20f; 
+
+    public float spell_dmg = 1;
+
+    public string parentTag = "";
+
+    public Vector3 positionCorrection = new Vector3(0.5f, 0.5f, 0.0f);
+
     public float maxLifetime = 5.0f;
 
     public float changingInterval = 0.15f;
@@ -29,16 +37,17 @@ public class Spell : MonoBehaviour
     {
         spriteR = gameObject.GetComponent<SpriteRenderer>();
         sprites = Resources.LoadAll(path, typeof(Sprite));
-
-        //To make spells more accurate
-        //transform.localPosition = new Vector3(0.5f, 0, 0);
-
         if(sprites.Length == 0) {
             Debug.Log("Cannot load spell sprites!");
         }
 
-        transform.localScale = new Vector3(0.25f, 0.25f, 0.25f);
+        //To make spells more accurate
+        transform.localPosition += positionCorrection;
 
+        //Set spell size
+        transform.localScale = new Vector3(spell_size, spell_size, spell_size);
+
+        //Heading to direction of shooting (and correction of movement direction)
         shootingDirection =  setRotation(shootingDirection);
     }
 
@@ -51,7 +60,8 @@ public class Spell : MonoBehaviour
         //Movement direction correction
         return rotateVector(targetDirection, -angle);
     }
- 
+
+    ///Rotation of vector by deg angle
     Vector2 rotateVector(Vector2 vector, float deg) {
         float sin = Mathf.Sin(deg*Mathf.Deg2Rad);
         float cos = Mathf.Cos(deg*Mathf.Deg2Rad);
@@ -108,9 +118,16 @@ public class Spell : MonoBehaviour
         
     }
 
-    private void OnTriggerEnter(Collider other)
-    { 
-        DestroySpell(); 
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        //Debug.Log(parentTag);
+        //Debug.Log("Collides with: " + other.gameObject);
+
+        //Making parent object immune against spell
+        if (!other.gameObject.CompareTag(parentTag)) 
+        {
+            DestroySpell();
+        }
     }
 
     void DestroySpell()
