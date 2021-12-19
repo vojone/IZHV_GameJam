@@ -17,16 +17,20 @@ Roguelike adventure.
 
 ## Used Assets
 
-+ https://0x72.itch.io/dungeontileset-ii (Thank you!)
++ www.0x72.itch.io/dungeontileset-ii  (Used one of tilesets. Thank you!)
 
-+ www.kenney.nl (Thank you!)
++ www.kenney.nl (Used one of tilesets. Thank you!)
+
++ www.dafont.com/vcr-osd-mono.font (Used font. Thanks!)
 
 
 ## Other used resources and tools
 
-+ learn.unity.com
++ www.learn.unity.com
 
-+ https://www.piskelapp.com/p/create/sprite
++ www.piskelapp.com/p/create/sprite 
 
-+ Solution of exercises in IZHV course (https://github.com/vojone?tab=repositories).
++ Exercises from IZHV course (see www.github.com/vojone?tab=repositories).
+
++ Of course www.docs.unity3d.com/Manual/index.html
 

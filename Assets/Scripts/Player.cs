@@ -16,6 +16,11 @@ public class Player : MonoBehaviour
     public float speed = 2;
 
     /// <summary>
+    /// Bounce when player collides with something.
+    /// </summary>
+    public float bounce = 8;
+
+    /// <summary>
     /// The number that divides player speed when spell is charging (CANNOT be null).
     /// </summary>
     public float chargingSpellHandicap = 3;
@@ -40,19 +45,22 @@ public class Player : MonoBehaviour
 
     private Vector2 move;
 
+    private Vector3 lastMoveDirection;
+
     private Vector2 look;
 
-    private float movementSpeed;
+    private float movementSpeed = 1.0f;
 
-    private bool chargingSpell;
+    private bool chargingSpell = false;
 
-    private bool takingDmg;
+    private bool takingDmg = false;
 
-    private float defaultSpeed;
+    private bool bounced = false;
 
     private Animator animator;
 
     PlayerInput controls;
+
     void Awake()
     {
         controls = new PlayerInput();
@@ -101,6 +109,8 @@ public class Player : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         takingDmg = false;
+
+        lastMoveDirection = Vector3.zero;
     }
 
     void Update() {
@@ -118,7 +128,22 @@ public class Player : MonoBehaviour
     void UpdatePosition() {
         Vector3 movement = new Vector3(move.x, move.y, 0.0f).normalized * speed * Time.deltaTime;
         
-        transform.Translate(movement);
+        if(movement.magnitude > 0.0f) {
+            //Check if character can move in movement direction
+            Bounds bounds = gameObject.GetComponent<Collider2D>().bounds;
+
+            var hit1 = Physics2D.BoxCast(bounds.center, bounds.size*1.1f, 0.0f, movement, movement.magnitude*1.1f);
+            var hit2 = Physics2D.BoxCast(bounds.center, bounds.size*1.1f, 0.0f, new Vector3(movement.x*1.3f, movement.y, 0), movement.magnitude*1.1f);
+            var hit3 = Physics2D.BoxCast(bounds.center, bounds.size*1.1f, 0.0f, new Vector3(movement.x, movement.y*1.3f, 0), movement.magnitude*1.1f);
+            if(hit1.collider == null && hit2.collider == null && hit3.collider == null) {
+                transform.Translate(movement);
+            }
+            else {
+                movement = Vector3.zero;
+            }
+        }
+
+        lastMoveDirection = movement;
 
         movementSpeed = movement.magnitude;
     }
@@ -154,5 +179,28 @@ public class Player : MonoBehaviour
 
         animator.SetFloat("Speed", movementSpeed);
 		animator.SetBool("TakingDmg", takingDmg);
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if(other.gameObject.layer == LayerMask.NameToLayer("Blocking"))
+        {   
+            //Little bounce when BoxCast is not enough
+            transform.Translate(-lastMoveDirection*bounce);
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        if(other.gameObject.layer == LayerMask.NameToLayer("Blocking") && !bounced)
+        {   
+            //Little bounce when BoxCast is not enough
+            transform.Translate(-lastMoveDirection*bounce);
+            bounced = true;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D other) {
+        bounced = false;
     }
 }
