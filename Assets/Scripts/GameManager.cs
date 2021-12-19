@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+
+    public Vector3 spawnPoint = new Vector3(2.0f, 1.0f, 1.0f);
+
     private bool gameLost = false;
 
     private bool gameStarted = true;
@@ -19,6 +22,10 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public Vector3 GetSpawnPoint() {
+        return spawnPoint;
     }
 
 
@@ -37,6 +44,8 @@ public class GameManager : MonoBehaviour
                 nearest = player;
             }
         }
+
+        distance = closestDistance;
 
         return nearest;
     }

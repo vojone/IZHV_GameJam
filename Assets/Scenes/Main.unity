@@ -2941,12 +2941,16 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 468316370913722378, guid: d46c2a7592a66924c9dffc0f214e12c0, type: 3}
+      propertyPath: spellPrefab
+      value: 
+      objectReference: {fileID: 2054838852683118140, guid: a9dde177880ac9f418d830b227c043e9, type: 3}
+    - target: {fileID: 468316370913722378, guid: d46c2a7592a66924c9dffc0f214e12c0, type: 3}
       propertyPath: chargingSpeed
       value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 468316370913722378, guid: d46c2a7592a66924c9dffc0f214e12c0, type: 3}
       propertyPath: spellOffset.x
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 468316370913722378, guid: d46c2a7592a66924c9dffc0f214e12c0, type: 3}
       propertyPath: spellOffset.y
@@ -3040,6 +3044,10 @@ PrefabInstance:
       propertyPath: cursorDefault
       value: 
       objectReference: {fileID: 2800000, guid: 2b48ece7f3febd146991e5111f3633c8, type: 3}
+    - target: {fileID: 468316371880324071, guid: d46c2a7592a66924c9dffc0f214e12c0, type: 3}
+      propertyPath: timeLoopLength
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 468316371880324071, guid: d46c2a7592a66924c9dffc0f214e12c0, type: 3}
       propertyPath: cursorWandChargingPath
       value: WandCursor

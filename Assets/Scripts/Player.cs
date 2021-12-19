@@ -5,15 +5,22 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+
+    public Vector3 timeCheckPoint = new Vector3(2.0f, 1.0f, 1.0f);
+
     /// <summary>
     /// Number of hits that can player get before he dies.
     /// </summary>
-    public int HP = 10;
+    public float HP = 10.0f;
 
     /// <summary>
     /// Speed of player movement.
     /// </summary>
     public float speed = 2;
+
+    public float timeLoopLength = 60.0f;
+
+    private float remainingTime;
 
     /// <summary>
     /// Bounce when player collides with something.
@@ -63,6 +70,8 @@ public class Player : MonoBehaviour
 
     private Animator animator;
 
+    private Vector3 originalScale;
+
     PlayerInput controls;
 
     void Awake()
@@ -101,6 +110,10 @@ public class Player : MonoBehaviour
             Debug.Log("Cannot load wand cursor textures!");
         }
 
+        remainingTime = timeLoopLength;
+
+        originalScale = transform.localScale;
+
         currentCursorInd = 0;
     }
 
@@ -113,13 +126,19 @@ public class Player : MonoBehaviour
         UpdatePosition();
         UpdateCharacter();
         UpdateCursor();
+        CheckRemainingTime();
         Animate();
+    }
 
-        if(chargingSpell) {
-            wand.GetComponent<Wand>().Charge();
-        }
-        else {
-            wand.GetComponent<Wand>().setEnergyTo(0.0f);
+
+    void CheckRemainingTime() {
+        if(remainingTime <= 0.0f) {
+            if(remainingTime <= -respawnTimeGap) {
+                Vector3 newPosition = timeCheckPoint;
+                transform.position = newPosition;
+
+                remainingTime = timeLoopLength;
+            }
         }
     }
 
@@ -147,6 +166,14 @@ public class Player : MonoBehaviour
     }
 
     void UpdateCharacter() {
+        remainingTime -= Time.deltaTime;
+
+        if(chargingSpell) {
+            wand.GetComponent<Wand>().Charge();
+        }
+        else {
+            wand.GetComponent<Wand>().setEnergyTo(0.0f);
+        }
 
     }
 
@@ -158,8 +185,6 @@ public class Player : MonoBehaviour
             if(currentCursorInd >= cursorWandCharging.Length) { //Just for safety
                 currentCursorInd = 0;
             }
-
-            Debug.Log(chargePerc);
 
             Cursor.SetCursor(cursorWandCharging[currentCursorInd], Vector2.zero, CursorMode.Auto);
         } 
