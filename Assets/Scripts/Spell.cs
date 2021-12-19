@@ -48,31 +48,18 @@ public class Spell : MonoBehaviour
         transform.localScale = new Vector3(spell_size, spell_size, spell_size);
 
         //Heading to direction of shooting (and correction of movement direction)
-        shootingDirection =  setRotation(shootingDirection);
+        shootingDirection =  SetRotation(shootingDirection);
     }
 
 
-    Vector2 setRotation(Vector2 targetDirection) {
+    Vector2 SetRotation(Vector2 targetDirection) {
         var angle = Vector2.SignedAngle(Vector2.right, targetDirection);
 
         transform.Rotate(0, 0, angle);
 
         //Movement direction correction
-        return rotateVector(targetDirection, -angle);
+        return Utils.RotateVector(targetDirection, -angle);
     }
-
-    ///Rotation of vector by deg angle
-    Vector2 rotateVector(Vector2 vector, float deg) {
-        float sin = Mathf.Sin(deg*Mathf.Deg2Rad);
-        float cos = Mathf.Cos(deg*Mathf.Deg2Rad);
-
-        float x = vector.x;
-        float y = vector.y;
-         
-        Vector2 result = new Vector2(cos*x-sin*y, sin*x+cos*y);
-        return result;
-    }
-
 
     void FixedUpdate()
     {

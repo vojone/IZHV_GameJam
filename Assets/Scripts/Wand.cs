@@ -26,11 +26,11 @@ public class Wand : MonoBehaviour
         
     }
 
-    public float getChargePerc() {
+    public float GetChargePerc() {
         return currentCharge/maxCharge;
     }
 
-    public void charge(float energy) {
+    public void Charge(float energy) {
         currentCharge += energy;
 
         if(currentCharge > maxCharge) {
@@ -38,7 +38,7 @@ public class Wand : MonoBehaviour
         }
     }
 
-    public void fire(Vector3 position, Vector2 direction, int author) {
+    public void Fire(Vector3 position, Vector2 direction, int author) {
         //Debug.Log(direction);
 
         var spell = Instantiate(spellPrefab, position, Quaternion.identity);

@@ -45,6 +45,9 @@ TagManager:
   - name: Floor
     uniqueID: 1651565695
     locked: 0
+  - name: Decoration
+    uniqueID: 927596359
+    locked: 0
   - name: Walls
     uniqueID: 3831643583
     locked: 0
@@ -56,4 +59,7 @@ TagManager:
     locked: 0
   - name: Spells
     uniqueID: 493928897
+    locked: 0
+  - name: Celing
+    uniqueID: 3962744129
     locked: 0
