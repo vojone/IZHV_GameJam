@@ -9,9 +9,17 @@ public class Wand : MonoBehaviour
     ///</summary>
     public GameObject spellPrefab;
 
+
     public float maxCharge = 10.0f;
 
     private float currentCharge = 0.0f;
+
+    /// <summary>
+    /// Determines how fast is charging of this wand.
+    /// </summary>
+    public float chargingSpeed = 8.0f;
+
+    public Vector3 spellOffset = new Vector3(0.5f, -0.15f, 0.0f);
 
 
     // Start is called before the first frame update
@@ -26,11 +34,21 @@ public class Wand : MonoBehaviour
         
     }
 
+    // Update is called once per frame
+    void FixedUpdate()
+    {
+        
+    }
+
     public float GetChargePerc() {
         return currentCharge/maxCharge;
     }
 
-    public void Charge(float energy) {
+    public void Charge() {
+        AddEnergy(chargingSpeed*Time.deltaTime);
+    }
+
+    public void AddEnergy(float energy) {
         currentCharge += energy;
 
         if(currentCharge > maxCharge) {
@@ -38,10 +56,14 @@ public class Wand : MonoBehaviour
         }
     }
 
+    public void setEnergyTo(float energy) {
+        currentCharge = energy;
+    }
+
     public void Fire(Vector3 position, Vector2 direction, int author) {
         //Debug.Log(direction);
 
-        var spell = Instantiate(spellPrefab, position, Quaternion.identity);
+        var spell = Instantiate(spellPrefab, position + spellOffset, Quaternion.identity);
 
         spell.GetComponent<Spell>().shootingDirection = new Vector2(direction.x, direction.y);
         spell.GetComponent<Spell>().parentTag = "Player";

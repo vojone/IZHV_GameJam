@@ -4,17 +4,15 @@ using UnityEngine;
 
 public class Spell : MonoBehaviour
 {
-    public string path = "Fireball";
+    public float speed = 7.5f;
 
-    public float speed = 5.0f;
-
-    public float spell_size = 0.20f; 
+    public Vector3 spellSizeFactor = new Vector3(0.20f, 0.20f, 0.20f); 
 
     public float spell_dmg = 1;
 
     public string parentTag = "";
 
-    public Vector3 positionCorrection = new Vector3(0.5f, 0.5f, 0.0f);
+    public Vector3 positionCorrection = new Vector3(0.0f, 0.0f, 0.0f);
 
     public float maxLifetime = 5.0f;
 
@@ -23,7 +21,10 @@ public class Spell : MonoBehaviour
     public Vector2 shootingDirection = new Vector2(1.0f, 1.0f);
 
     private SpriteRenderer spriteR;
-    private Object[] sprites;
+
+    public string spellPath = "Fireball";
+
+    private Sprite[] sprites;
 
     private float lastChangeBefore = 0.0f;
 
@@ -36,19 +37,20 @@ public class Spell : MonoBehaviour
     void Start()
     {
         spriteR = gameObject.GetComponent<SpriteRenderer>();
-        sprites = Resources.LoadAll(path, typeof(Sprite));
+
+        sprites = Resources.LoadAll<Sprite>(spellPath);
         if(sprites.Length == 0) {
-            Debug.Log("Cannot load spell sprites!");
+            Debug.Log("Cannot load spell animation sprites!");
         }
 
         //To make spells more accurate
         transform.localPosition += positionCorrection;
 
         //Set spell size
-        transform.localScale = new Vector3(spell_size, spell_size, spell_size);
+        transform.localScale = spellSizeFactor;
 
         //Heading to direction of shooting (and correction of movement direction)
-        shootingDirection =  SetRotation(shootingDirection);
+        shootingDirection = SetRotation(shootingDirection);
     }
 
 

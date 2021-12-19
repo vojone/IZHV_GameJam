@@ -34,7 +34,11 @@ public class Player : MonoBehaviour
 
     public Texture2D cursorDefault;
 
-    public Texture2D cursorSpellActive;
+    public string cursorWandChargingPath;
+
+    private Texture2D[] cursorWandCharging;
+
+    private int currentCursorInd;
 
     public Texture2D cursorInfo;
 
@@ -85,32 +89,19 @@ public class Player : MonoBehaviour
         speed = speed / chargingSpellHandicap;
     }
 
-    private void Fire() {
-        //Position of cursor in screen
-        var cursorPos = Mouse.current.position.ReadValue();
-
-        //Position in world space
-        var worldPos = Camera.main.ScreenToWorldPoint(new Vector3(cursorPos.x, cursorPos.y, 10));
-
-        var position = transform.position;
-        var spellDirection = new Vector2(worldPos.x-position.x, worldPos.y-position.y);
-
-        //Normalize direction of spell
-        spellDirection = spellDirection.normalized;
-
-        wand.GetComponent<Wand>().Fire(position, spellDirection, gameObject.transform.GetInstanceID());
-
-        //Charging spell penalization removal
-        speed *= chargingSpellHandicap;
-        chargingSpell = false;
-    }
-
     void Start()
     {
         animator = GetComponent<Animator>();
         takingDmg = false;
 
         lastMoveDirection = Vector3.zero;
+
+        cursorWandCharging = Resources.LoadAll<Texture2D>(cursorWandChargingPath);
+        if(cursorWandCharging.Length == 0) {
+            Debug.Log("Cannot load wand cursor textures!");
+        }
+
+        currentCursorInd = 0;
     }
 
     void Update() {
@@ -123,6 +114,13 @@ public class Player : MonoBehaviour
         UpdateCharacter();
         UpdateCursor();
         Animate();
+
+        if(chargingSpell) {
+            wand.GetComponent<Wand>().Charge();
+        }
+        else {
+            wand.GetComponent<Wand>().setEnergyTo(0.0f);
+        }
     }
 
     void UpdatePosition() {
@@ -149,13 +147,24 @@ public class Player : MonoBehaviour
     }
 
     void UpdateCharacter() {
+
     }
 
     void UpdateCursor() {
         if(chargingSpell) {
-            Cursor.SetCursor(cursorSpellActive, Vector2.zero, CursorMode.Auto);
+            float chargePerc = wand.GetComponent<Wand>().GetChargePerc();
+            currentCursorInd = Mathf.FloorToInt(chargePerc*(cursorWandCharging.Length - 1));
+            
+            if(currentCursorInd >= cursorWandCharging.Length) { //Just for safety
+                currentCursorInd = 0;
+            }
+
+            Debug.Log(chargePerc);
+
+            Cursor.SetCursor(cursorWandCharging[currentCursorInd], Vector2.zero, CursorMode.Auto);
         } 
         else {
+            currentCursorInd = 0;
             Cursor.SetCursor(cursorDefault, Vector2.zero, CursorMode.Auto);
         }
     }
@@ -180,6 +189,28 @@ public class Player : MonoBehaviour
         animator.SetFloat("Speed", movementSpeed);
 		animator.SetBool("TakingDmg", takingDmg);
     }
+
+
+    private void Fire() {
+        //Position of cursor in screen
+        var cursorPos = Mouse.current.position.ReadValue();
+
+        //Position in world space
+        var worldPos = Camera.main.ScreenToWorldPoint(new Vector3(cursorPos.x, cursorPos.y, 10));
+
+        var position = transform.position;
+        var spellDirection = new Vector2(worldPos.x-position.x, worldPos.y-position.y);
+
+        //Normalize direction of spell
+        spellDirection = spellDirection.normalized;
+
+        wand.GetComponent<Wand>().Fire(position, spellDirection, gameObject.transform.GetInstanceID());
+
+        //Charging spell penalization removal
+        speed *= chargingSpellHandicap;
+        chargingSpell = false;
+    }
+
 
     private void OnTriggerEnter2D(Collider2D other)
     {
