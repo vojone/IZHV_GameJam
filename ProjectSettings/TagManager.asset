@@ -47,9 +47,12 @@ TagManager:
   - name: Walls
     uniqueID: 3831643583
     locked: 0
+  - name: Items
+    uniqueID: 49433721
+    locked: 0
   - name: Characters
     uniqueID: 1938278989
     locked: 0
-  - name: Items
-    uniqueID: 49433721
+  - name: Spells
+    uniqueID: 493928897
     locked: 0

@@ -15,7 +15,17 @@ public class Player : MonoBehaviour
     /// </summary>
     public float speed = 2;
 
+    /// <summary>
+    /// The number that divides player speed when spell is charging (CANNOT be null).
+    /// </summary>
+    public float chargingSpellHandicap = 3;
+
+    /// <summary>
+    /// The direction of player.
+    /// </summary>
     public bool headingRight = true;
+
+    public GameObject wand;
 
     public Texture2D cursorDefault;
 
@@ -34,7 +44,11 @@ public class Player : MonoBehaviour
 
     private float movementSpeed;
 
+    private bool chargingSpell;
+
     private bool takingDmg;
+
+    private float defaultSpeed;
 
     private Animator animator;
 
@@ -46,7 +60,8 @@ public class Player : MonoBehaviour
         controls.Player.Move.performed += ctx => move = ctx.ReadValue<Vector2>();
         controls.Player.Move.canceled += ctx => move = Vector2.zero;
 
-        Cursor.SetCursor(cursorDefault, Vector2.zero, CursorMode.Auto);
+        controls.Player.Charge.performed += ctx => chargingSpell = true;
+        controls.Player.Charge.canceled += ctx => Fire();
     }
  
     private void OnEnable() {
@@ -58,24 +73,28 @@ public class Player : MonoBehaviour
     }
 
     private void OnCharge() {
-        Cursor.SetCursor(cursorSpellActive, Vector2.zero, CursorMode.Auto);
-
         //Charging spell penalization
-        speed = speed / 2;
+        speed = speed / chargingSpellHandicap;
     }
 
-    private void onFire() {
-        Cursor.SetCursor(cursorDefault, Vector2.zero, CursorMode.Auto);
-
+    private void Fire() {
+        //Position of cursor in screen
         var cursorPos = Mouse.current.position.ReadValue();
-        var spellDirection = new Vector3(cursorPos.x, cursorPos.y, 0.0f);
+
+        //Position in world space
+        var worldPos = Camera.main.ScreenToWorldPoint(new Vector3(cursorPos.x, cursorPos.y, 10));
+
+        var position = transform.position;
+        var spellDirection = new Vector2(worldPos.x-position.x, worldPos.y-position.y);
 
         //Normalize direction of spell
-        spellDirection = spellDirection - transform.position;
         spellDirection = spellDirection.normalized;
 
+        wand.GetComponent<Wand>().Fire(position, spellDirection);
+
         //Charging spell penalization removal
-        speed *= 2;
+        speed *= chargingSpellHandicap;
+        chargingSpell = false;
     }
 
     void Start()
@@ -92,6 +111,7 @@ public class Player : MonoBehaviour
     {
         UpdatePosition();
         UpdateCharacter();
+        UpdateCursor();
         Animate();
     }
 
@@ -100,11 +120,19 @@ public class Player : MonoBehaviour
         
         transform.Translate(movement);
 
-        movementSpeed = movement;
+        movementSpeed = movement.magnitude;
     }
 
     void UpdateCharacter() {
+    }
 
+    void UpdateCursor() {
+        if(chargingSpell) {
+            Cursor.SetCursor(cursorSpellActive, Vector2.zero, CursorMode.Auto);
+        } 
+        else {
+            Cursor.SetCursor(cursorDefault, Vector2.zero, CursorMode.Auto);
+        }
     }
 
     void Animate() {
