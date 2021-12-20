@@ -7,7 +7,7 @@ public class CameraController : MonoBehaviour
     ///<summary>
     ///Player, which will be followed by the camera
     ///</summary>
-    public GameObject player;
+    public GameObject player = null;
 
     ///<summary>
     ///Can be used for simple adjusting camera
@@ -38,36 +38,50 @@ public class CameraController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //Get starting offset
-        offset = transform.position - player.transform.position;
+        currentSpeed = adjustSpeed;
+    }
+
+    public void SetPlayer(GameObject playerToBeFollowed) {
+        player = playerToBeFollowed;
+
+        recordOffset();
+
+        //Center camera to player
+        offset.x = 0.0f;
+        offset.y = 0.0f;
 
         centeredPosition = GetCenteredPosition();
+    }
 
-        currentSpeed = adjustSpeed;
+    public void recordOffset() {
+        //Get starting offset
+        offset = transform.position - player.transform.position;
     }
 
     void LateUpdate()
     {
-        centeredPosition = GetCenteredPosition();
-        diff = GetDiff();
+        if(player != null) {
+            centeredPosition = GetCenteredPosition();
+            diff = GetDiff();
 
-        if(Mathf.Abs(diff.x) > tolerance.x ||
-           Mathf.Abs(diff.y) > tolerance.y) {
-            //Player is not in bigger rectangle -> camera should be adjusted
-            adjustingOn = true;
-            movement = GetAdjustingVector();
-        }
-        else if(Mathf.Abs(diff.x) < innerTolerance.x &&
-                Mathf.Abs(diff.y) < innerTolerance.y) {
-            //Camera points to small rectangle
-            adjustingOn = false;
-        }
-        
-        if(adjustingOn) {
-            Adjust();
-        }
+            if(Mathf.Abs(diff.x) > tolerance.x ||
+            Mathf.Abs(diff.y) > tolerance.y) {
+                //Player is not in bigger rectangle -> camera should be adjusted
+                adjustingOn = true;
+                movement = GetAdjustingVector();
+            }
+            else if(Mathf.Abs(diff.x) < innerTolerance.x &&
+                    Mathf.Abs(diff.y) < innerTolerance.y) {
+                //Camera points to small rectangle
+                adjustingOn = false;
+            }
+            
+            if(adjustingOn) {
+                Adjust();
+            }
 
-        //transform.position = player.transform.position + offset + additionalOffset;
+            //transform.position = player.transform.position + offset + additionalOffset;
+        }
     }
 
     Vector3 GetCenteredPosition() {

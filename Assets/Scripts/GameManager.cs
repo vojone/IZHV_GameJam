@@ -7,11 +7,13 @@ public class GameManager : MonoBehaviour
 
     public Vector3 spawnPoint = new Vector3(2.0f, 1.0f, 1.0f);
 
+    public GameObject playerPrefab;
+
     public GameObject mainCamera;
 
     private bool gameLost = false;
 
-    private bool gameStarted = true;
+    private bool gameStarted = false;
 
     public static GameManager Instance;
 
@@ -19,7 +21,12 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        var player = Instantiate(playerPrefab, spawnPoint, Quaternion.identity);
+        players.Add(player);
+
+        mainCamera.GetComponent<CameraController>().SetPlayer(player);
+
+        gameStarted = true;
     }
 
     void Awake()
@@ -34,11 +41,21 @@ public class GameManager : MonoBehaviour
         }
     }
 
+
     // Update is called once per frame
     void Update()
     {
         
     }
+
+    public void GameOver() {
+
+    }
+
+    public void SetSpawnPoint(Vector3 position) {
+        spawnPoint = position;
+    }
+
     public Vector3 GetSpawnPoint() {
         return spawnPoint;
     }

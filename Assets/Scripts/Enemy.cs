@@ -88,16 +88,21 @@ public class Enemy : MonoBehaviour
         attackTarget = GameManager.Instance.NearestPlayer(transform.position, out distance);
 
         if(attackTarget != null) {
+            Debug.Log("Player found");
             if(distance < visionRadius) {
-                Debug.Log("Warning");
+                Debug.Log("Player is waking up me");
+
                 timeToWake -= Time.deltaTime;
 
                 if(timeToWake < 0.0f) {
+                    Debug.Log("I am going to kill him");
                     hasTarget = true;
                     timeToWake = defTimeToWake;
                 }
             }
             else {
+                Debug.Log("Distance is too big");
+
                 timeToWake = defTimeToWake;
             }
         }

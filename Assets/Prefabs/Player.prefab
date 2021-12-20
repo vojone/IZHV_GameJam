@@ -25,7 +25,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 468316370913722380}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.5, y: -0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -44,7 +44,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1521596fc8c7d8847b9510de80e81d4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spellPrefab: {fileID: 3444983473389612868, guid: 9c7d1a79ef57d35489daf49bb62b0af8, type: 3}
+  spellPrefab: {fileID: 2054838852683118140, guid: a9dde177880ac9f418d830b227c043e9, type: 3}
+  maxCharge: 10
+  chargingSpeed: 8
+  spellOffset: {x: 0.5, y: 0, z: 0}
 --- !u!1 &468316371880324057
 GameObject:
   m_ObjectHideFlags: 0
@@ -122,7 +125,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1938278989
-  m_SortingLayer: 4
+  m_SortingLayer: 5
   m_SortingOrder: 0
   m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -186,10 +189,10 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.061903626, y: -0.3209266}
+  m_Offset: {x: 0.11902982, y: -0.4737713}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -200,7 +203,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.7761927, y: 1.1487166}
+  m_Size: {x: 0.6225568, y: 0.84299594}
   m_EdgeRadius: 0
 --- !u!114 &468316371880324071
 MonoBehaviour:
@@ -214,14 +217,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1e465bc06e10f044ba6c78fa7b4b5cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  timeCheckPoint: {x: 2, y: 1, z: 1}
   HP: 10
   speed: 2
+  timeLoopLength: 5
+  disappearAnimLength: 1.5
+  appearAnimLength: 1.5
+  bounce: 8
   chargingSpellHandicap: 3
   headingRight: 1
   wand: {fileID: 468316370913722380}
-  cursorDefault: {fileID: 2800000, guid: 08c97a7493c0d004ca605eab616717ad, type: 3}
-  cursorSpellActive: {fileID: 2800000, guid: feebc3b131a4e984b881b1f84c31f032, type: 3}
+  cursorDefault: {fileID: 2800000, guid: 2b48ece7f3febd146991e5111f3633c8, type: 3}
+  cursorWandChargingPath: WandCursor
   cursorInfo: {fileID: 0}
+  moveEnable: 1
+  disappearing: 0
+  appearing: 0
 --- !u!114 &468316371880324070
 MonoBehaviour:
   m_ObjectHideFlags: 0
