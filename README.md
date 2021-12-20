@@ -26,11 +26,13 @@ Roguelike adventure.
 
 ## Other used resources and tools
 
++ www.piskelapp.com/p/create/sprite (was very usefull for creating Assets)
+
 + www.learn.unity.com
 
-+ www.piskelapp.com/p/create/sprite 
-
 + Exercises from IZHV course (see www.github.com/vojone?tab=repositories).
+
++ IZHV course web page
 
 + Of course www.docs.unity3d.com/Manual/index.html
 

@@ -115,6 +115,7 @@ public class Spell : MonoBehaviour
         //Debug.Log("Collides with: " + other.gameObject);
 
         //Making parent object immune against spell
+        Debug.Log(!other.gameObject.CompareTag(parentTag));
         if (!other.gameObject.CompareTag(parentTag) && other.gameObject.layer == LayerMask.NameToLayer("Blocking")) 
         {
             if(other.gameObject.CompareTag("Enemy")) {

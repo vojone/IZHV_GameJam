@@ -68,7 +68,6 @@ public class InteractiveElement : MonoBehaviour
     }
 
     public bool Toggle() {
-        Debug.Log("Hii");
         if(isEnabled) {
             if(isButton) {
                 remainingTime = timeToForgetState;

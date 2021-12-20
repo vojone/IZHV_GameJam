@@ -88,7 +88,7 @@ public class Player : MonoBehaviour
 
     PlayerInput controls;
 
-    private GameObject currentObjectToInteract = null;
+    private List<GameObject> objectsToInteract = new List<GameObject>();
 
     void Awake()
     {
@@ -115,11 +115,14 @@ public class Player : MonoBehaviour
     }
 
     private void OnInteract() {
-        if(currentObjectToInteract.CompareTag("InteractiveElement")) {
-            InteractiveElement el = currentObjectToInteract.GetComponent<InteractiveElement>();
+        if(objectsToInteract.Count > 0) {
+            var currentObjectToInteract = objectsToInteract[objectsToInteract.Count - 1];
+            if(currentObjectToInteract.CompareTag("InteractiveElement")) {
+                InteractiveElement el = currentObjectToInteract.GetComponent<InteractiveElement>();
 
-            if(el.IsEnabled()) {
-                el.Toggle();
+                if(el.IsEnabled()) {
+                    el.Toggle();
+                }
             }
         }
     }
@@ -309,8 +312,8 @@ public class Player : MonoBehaviour
         }
 
         if(other.gameObject.layer == LayerMask.NameToLayer("Interactive")) {
-            Debug.Log("Listening for interaction");
-            currentObjectToInteract = other.gameObject;
+            objectsToInteract.Add(other.gameObject);
+            //Debug.Log("Listening for interaction");
         }
     }
 
@@ -327,9 +330,11 @@ public class Player : MonoBehaviour
     private void OnTriggerExit2D(Collider2D other) {
         bounced = false;
 
-         if(currentObjectToInteract.GetInstanceID() == other.gameObject.GetInstanceID()) {
-            Debug.Log("Too far from interactive object");
-            currentObjectToInteract = null;
+        if(other.gameObject.layer == LayerMask.NameToLayer("Interactive") && 
+           objectsToInteract.Count > 0) {
+
+            var toRemove = objectsToInteract.Find(obj => obj.GetInstanceID() == other.gameObject.GetInstanceID());
+            objectsToInteract.Remove(toRemove);
         }
     }
 }
