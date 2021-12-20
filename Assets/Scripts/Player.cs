@@ -6,7 +6,7 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
 
-    public Vector3 timeCheckPoint = new Vector3(2.0f, 1.0f, 1.0f);
+    public Vector3 timeCheckPoint = new Vector3(2.0f, 1.0f, 0.0f);
 
     /// <summary>
     /// Number of hits that can player get before he dies.
@@ -29,7 +29,7 @@ public class Player : MonoBehaviour
     /// <summary>
     /// Bounce when player collides with something.
     /// </summary>
-    public float bounce = 8;
+    public float bounce = 8.0f;
 
     /// <summary>
     /// The number that divides player speed when spell is charging (CANNOT be null).
@@ -74,7 +74,11 @@ public class Player : MonoBehaviour
 
     private Animator animator;
 
+    public ParticleSystem BloodParticleSystem;
+
     public bool moveEnable = true;
+
+    public bool dmgEnable = true;
 
     public bool disappearing = false;
 
@@ -83,6 +87,8 @@ public class Player : MonoBehaviour
     private Vector3 originalScale;
 
     PlayerInput controls;
+
+    private GameObject currentObjectToInteract = null;
 
     void Awake()
     {
@@ -106,6 +112,16 @@ public class Player : MonoBehaviour
     private void OnCharge() {
         //Charging spell penalization
         speed = speed / chargingSpellHandicap;
+    }
+
+    private void OnInteract() {
+        if(currentObjectToInteract.CompareTag("InteractiveElement")) {
+            InteractiveElement el = currentObjectToInteract.GetComponent<InteractiveElement>();
+
+            if(el.IsEnabled()) {
+                el.Toggle();
+            }
+        }
     }
 
     void Start()
@@ -134,16 +150,32 @@ public class Player : MonoBehaviour
     void FixedUpdate() 
     {
         UpdatePosition();
-        UpdateCharacter();
         UpdateCursor();
         CheckRemainingTime();
         Animate();
+
+        UpdateCharacter();
+    }
+
+    public void Damage(string type, float damagePower) {
+        takingDmg = true;
+
+        if(BloodParticleSystem != null) {
+            BloodParticleSystem.Play();
+        }
+
+        HP -= damagePower;
+
+        if(HP < 0.0f) {
+            HP = 0.0f;
+        }
     }
 
 
     void CheckRemainingTime() {
         if(remainingTime <= 0.0f) {
             moveEnable = false;
+            dmgEnable = false;
             disappearing = true;
 
             if(remainingTime < -disappearAnimLength) {
@@ -158,6 +190,7 @@ public class Player : MonoBehaviour
 
                     remainingTime = timeLoopLength;
                     moveEnable = true;
+                    dmgEnable = true;
                     disappearing = false;
                     appearing = false;
                 }
@@ -175,11 +208,8 @@ public class Player : MonoBehaviour
         if(movement.magnitude > 0.0f) {
             //Check if character can move in movement direction
             Bounds bounds = gameObject.GetComponent<Collider2D>().bounds;
-
-            var hit1 = Physics2D.BoxCast(bounds.center, bounds.size*1.1f, 0.0f, movement, movement.magnitude*1.1f);
-            var hit2 = Physics2D.BoxCast(bounds.center, bounds.size*1.1f, 0.0f, new Vector3(movement.x*1.3f, movement.y, 0), movement.magnitude*1.1f);
-            var hit3 = Physics2D.BoxCast(bounds.center, bounds.size*1.1f, 0.0f, new Vector3(movement.x, movement.y*1.3f, 0), movement.magnitude*1.1f);
-            if(hit1.collider == null && hit2.collider == null && hit3.collider == null) {
+            var hit = Physics2D.BoxCast(bounds.center, bounds.size*1.05f, 0.0f, movement, movement.magnitude*1.05f);
+            if(hit.collider == null || hit.collider.gameObject.layer != LayerMask.NameToLayer("Blocking")) {
                 if(moveEnable) {
                     transform.Translate(movement);
                 }
@@ -195,6 +225,7 @@ public class Player : MonoBehaviour
     }
 
     void UpdateCharacter() {
+        takingDmg = false;
         remainingTime -= Time.deltaTime;
 
         if(chargingSpell) {
@@ -246,6 +277,7 @@ public class Player : MonoBehaviour
 		animator.SetBool("TakingDmg", takingDmg);
     }
 
+    
 
     private void Fire() {
         //Position of cursor in screen
@@ -275,6 +307,11 @@ public class Player : MonoBehaviour
             //Little bounce when BoxCast is not enough
             transform.Translate(-lastMoveDirection*bounce);
         }
+
+        if(other.gameObject.layer == LayerMask.NameToLayer("Interactive")) {
+            Debug.Log("Listening for interaction");
+            currentObjectToInteract = other.gameObject;
+        }
     }
 
     private void OnTriggerStay2D(Collider2D other)
@@ -289,5 +326,10 @@ public class Player : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D other) {
         bounced = false;
+
+         if(currentObjectToInteract.GetInstanceID() == other.gameObject.GetInstanceID()) {
+            Debug.Log("Too far from interactive object");
+            currentObjectToInteract = null;
+        }
     }
 }

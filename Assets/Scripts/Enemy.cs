@@ -9,9 +9,17 @@ public class Enemy : MonoBehaviour
 
     public float speed = 1.0f;
 
+    public string dmgType = "Bite";
+
+    public float attackCooldown = 1.0f;
+
+    public float damage = 1.0f;
+
+    public int pathOptions = 8;
+
     public float visionRadius = 3.0f; 
 
-    public float defTimeToWake = 1.0f;
+    public float defTimeToWake = 3.0f;
 
     public bool moveEnable = true;
 
@@ -27,10 +35,20 @@ public class Enemy : MonoBehaviour
 
     private GameObject attackTarget; 
 
+    private Animator animator;
+
+    private float currentAttackCooldown;
+
+    private bool takingDmg = false;
+
     // Start is called before the first frame update
     void Start()
     {
         attackTarget = null;
+
+        currentAttackCooldown = attackCooldown;
+
+        animator = gameObject.GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -40,7 +58,7 @@ public class Enemy : MonoBehaviour
     }
 
     void FixedUpdate() {
-        CheckForPlayer();
+        CheckForPlayer(true);
 
         if(attackTarget != null && hasTarget) {
             movementDirection = GetMoveVector();
@@ -49,9 +67,9 @@ public class Enemy : MonoBehaviour
             movementDirection = Vector2.zero;
         }
 
-
         Move();
         Animate();
+        UpdateCharacter();
     }
 
 
@@ -61,20 +79,22 @@ public class Enemy : MonoBehaviour
 
     void Move() {
         Vector3 movement = new Vector3(movementDirection.x, movementDirection.y, 0.0f).normalized * speed * Time.deltaTime;
-        
+    
         if(movement.magnitude > 0.0f) {
             //Check if character can move in movement direction
             Bounds bounds = gameObject.GetComponent<Collider2D>().bounds;
 
-            var hit1 = Physics2D.BoxCast(bounds.center, bounds.size*1.1f, 0.0f, movement, movement.magnitude*1.1f);
-            var hit2 = Physics2D.BoxCast(bounds.center, bounds.size*1.1f, 0.0f, new Vector3(movement.x*1.3f, movement.y, 0), movement.magnitude*1.1f);
-            var hit3 = Physics2D.BoxCast(bounds.center, bounds.size*1.1f, 0.0f, new Vector3(movement.x, movement.y*1.3f, 0), movement.magnitude*1.1f);
-            if(hit1.collider == null && hit2.collider == null && hit3.collider == null) {
+            var hit = Physics2D.BoxCast(bounds.center, bounds.size*1.05f, 0.0f, movement, movement.magnitude);
+            if(hit.collider == null || hit.collider.gameObject.layer != LayerMask.NameToLayer("Blocking")) {
                 if(moveEnable) {
                     transform.Translate(movement);
                 }
             }
             else {
+                if(hit.collider.gameObject.tag == "Player") {
+                    Attack(hit.collider.gameObject);
+                }
+
                 movement = Vector3.zero;
             }
         }
@@ -83,36 +103,69 @@ public class Enemy : MonoBehaviour
     }
 
 
-    void CheckForPlayer() {
+    public void Attack(GameObject target) {
+        attacking = true;
+
+        if(currentAttackCooldown <= 0) {
+            target.GetComponent<Player>().Damage(dmgType, damage);
+            currentAttackCooldown = attackCooldown;
+        }
+    }
+
+
+    public void Damage(string type, float damagePower) {
+        takingDmg = true;
+
+        HP -= damagePower;
+
+        if(HP < 0.0f) {
+            HP = 0.0f;
+        }
+    }
+
+    void UpdateCharacter() {
+        currentAttackCooldown -= Time.deltaTime;
+        attacking = false;
+        takingDmg = false;
+
+        if(HP == 0.0f) {
+            Destroy(gameObject);
+        }
+    }
+
+
+    void CheckForPlayer(bool distanceLimited) {
         float distance;
         attackTarget = GameManager.Instance.NearestPlayer(transform.position, out distance);
 
         if(attackTarget != null) {
-            Debug.Log("Player found");
-            if(distance < visionRadius) {
-                Debug.Log("Player is waking up me");
+            //Debug.Log("Player found");
+            if(distance < visionRadius || !distanceLimited) {
+                //Debug.Log("Player is waking up me");
 
                 timeToWake -= Time.deltaTime;
 
-                if(timeToWake < 0.0f) {
-                    Debug.Log("I am going to kill him");
+                if(timeToWake < 0.0f || !distanceLimited) {
+                    //Debug.Log("I am going to kill player");
                     hasTarget = true;
                     timeToWake = defTimeToWake;
                 }
             }
             else {
-                Debug.Log("Distance is too big");
-
+                //Debug.Log("Distance is too big");
+                hasTarget = false;
                 timeToWake = defTimeToWake;
             }
         }
         else {
-            hasTarget = true;
+            hasTarget = false;
             timeToWake = defTimeToWake;
         }
-    }   
+    } 
 
     void Animate() {
-
+        animator.SetFloat("Speed", movementSpeed);
+        animator.SetBool("Attacking", attacking);
+        animator.SetBool("TakingDmg", takingDmg);
     }
 }

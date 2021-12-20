@@ -28,4 +28,8 @@ public class Utils : MonoBehaviour
         Vector2 result = new Vector2(cos*x - sin*y, sin*x + cos*y);
         return result;
     }
+
+    public static bool CoinFlip() {
+        return Random.value >= 0.5 ? true : false;
+    }
 }

@@ -6,6 +6,8 @@ public class Spell : MonoBehaviour
 {
     public float speed = 7.5f;
 
+    public string type = "";
+
     public Vector3 spellSizeFactor = new Vector3(0.20f, 0.20f, 0.20f); 
 
     public float spell_dmg = 1;
@@ -16,31 +18,40 @@ public class Spell : MonoBehaviour
 
     public float maxLifetime = 5.0f;
 
-    public float changingInterval = 0.15f;
 
     public Vector2 shootingDirection = new Vector2(1.0f, 1.0f);
 
     private SpriteRenderer spriteR;
 
-    public string spellPath = "Fireball";
+    public Sprite sprite;
 
-    private Sprite[] sprites;
+    public Sprite[] particlesExplosion;
 
-    private float lastChangeBefore = 0.0f;
+    public Sprite[] particlesTail;
+
 
     private float lifetime = 0.0f;
 
-    private int currentSpriteIndex = 0;
+
+    public ParticleSystem ExplosionParticleSystem;
+
+    public ParticleSystem TailParticleSystem;
+
+    private bool destroying = false;
 
 
     // Start is called before the first frame update
     void Start()
     {
         spriteR = gameObject.GetComponent<SpriteRenderer>();
+        spriteR.sprite = sprite;
 
-        sprites = Resources.LoadAll<Sprite>(spellPath);
-        if(sprites.Length == 0) {
-            Debug.Log("Cannot load spell animation sprites!");
+        foreach(var particle in particlesExplosion) {
+            ExplosionParticleSystem.textureSheetAnimation.AddSprite(particle);
+        }
+
+        foreach(var particle in particlesTail) {
+            TailParticleSystem.textureSheetAnimation.AddSprite(particle);
         }
 
         //To make spells more accurate
@@ -48,6 +59,8 @@ public class Spell : MonoBehaviour
 
         //Set spell size
         transform.localScale = spellSizeFactor;
+        ExplosionParticleSystem.transform.localScale = spellSizeFactor;
+        TailParticleSystem.transform.localScale = spellSizeFactor;
 
         //Heading to direction of shooting (and correction of movement direction)
         shootingDirection = SetRotation(shootingDirection);
@@ -65,11 +78,17 @@ public class Spell : MonoBehaviour
 
     void FixedUpdate()
     {
-        UpdatePosition();
-        UpdateSprite();
-
-        if(lifetime >= maxLifetime) {
-            DestroySpell();
+        if(destroying) {
+            if(!ExplosionParticleSystem.IsAlive()) {
+                Destroy(gameObject); 
+            }
+        }
+        else {
+            UpdatePosition();
+    
+            if(lifetime >= maxLifetime) {
+                DestroySpell();
+            }
         }
     }
 
@@ -83,23 +102,6 @@ public class Spell : MonoBehaviour
         //Debug.Log(movement);
     }
 
-    void UpdateSprite() {
-        if(lastChangeBefore > changingInterval) {
-            //Only if resources were loaded
-            if(sprites.Length > 0) {
-                spriteR.sprite = (Sprite)sprites[currentSpriteIndex];
-            }
-
-            currentSpriteIndex++;
-            if(currentSpriteIndex >= sprites.Length) {
-                currentSpriteIndex = 0;
-            }
-
-            lastChangeBefore -= changingInterval;
-        }
-
-        lastChangeBefore += Time.deltaTime;
-    }
 
     // Update is called once per frame
     void Update()
@@ -113,14 +115,24 @@ public class Spell : MonoBehaviour
         //Debug.Log("Collides with: " + other.gameObject);
 
         //Making parent object immune against spell
-        if (!other.gameObject.CompareTag(parentTag)) 
+        if (!other.gameObject.CompareTag(parentTag) && other.gameObject.layer == LayerMask.NameToLayer("Blocking")) 
         {
+            if(other.gameObject.CompareTag("Enemy")) {
+                other.gameObject.GetComponent<Enemy>().Damage(type, spell_dmg);
+            }
+
             DestroySpell();
         }
     }
 
     void DestroySpell()
-    { 
-        Destroy(gameObject); 
+    {
+        ExplosionParticleSystem.Play();
+        TailParticleSystem.Pause();
+
+        TailParticleSystem.GetComponent<ParticleSystemRenderer>().sortingLayerID = SortingLayer.NameToID("Decoration");
+        gameObject.GetComponent<BoxCollider2D>().enabled = false;
+        spriteR.enabled = false;
+        destroying = true;
     }
 }

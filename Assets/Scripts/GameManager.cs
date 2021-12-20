@@ -32,7 +32,7 @@ public class GameManager : MonoBehaviour
     void Awake()
     {
         if(Instance == null) {
-            Debug.Log("Created Instance");
+            //Debug.Log("Created Instance");
             Instance = this;
             DontDestroyOnLoad(gameObject);
         }
@@ -76,9 +76,9 @@ public class GameManager : MonoBehaviour
         foreach(var player in players) {
             var plPos = player.transform.position;
             var dist = (plPos - position).magnitude;
-
+            
             if(closestDistance >= dist) {
-                dist = closestDistance;
+                closestDistance = dist;
                 nearest = player;
             }
         }

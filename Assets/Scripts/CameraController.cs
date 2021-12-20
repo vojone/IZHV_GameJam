@@ -20,7 +20,7 @@ public class CameraController : MonoBehaviour
 
     private float currentSpeed;
 
-    public Vector3 tolerance = new Vector2(0.4f, 0.4f);
+    public Vector3 tolerance = new Vector2(0.2f, 0.2f);
 
     public Vector3 innerTolerance = new Vector2(0.02f, 0.02f);
 
