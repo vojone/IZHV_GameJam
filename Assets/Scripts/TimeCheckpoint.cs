@@ -2,8 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Doors : MonoBehaviour
+public class TimeCheckpoint : MonoBehaviour
 {
+    public bool isEnabled = true;
+
+    public bool isMain = false;
+
+    public bool isActive = false;
+
+    public Vector3 offset = new Vector3(0.0f, 0.0f, 0.0f);
+
+
+    public Sprite mainSprite;
+
+    public Sprite disabledSprite;
+
+    public Sprite enabledSprite;
+
+    public Sprite disabledSpriteActive;
+
+    public Sprite enabledSpriteActive;
+
     ///<summary>
     /// Primary logical function to process states of connected interactive elements (buttons, levers)
     ///</summary>
@@ -13,27 +32,15 @@ public class Doors : MonoBehaviour
     /// Secondary logical function to process states of connected interactive elements
     ///</summary>
     public GameObject[] InteractsNOR;
-
-    public Sprite openedDoors;
-
-    public Sprite closedDoors;
-
-    public bool opened = false;
-
+    
     public bool wasNANDchosen = true;
 
-    public bool force = false;
-
     private SpriteRenderer spriteR;
-
-    private BoxCollider2D doorCollider;
-
+    // Start is called before the first frame update
     void Start()
     {
-        spriteR = GetComponent<SpriteRenderer>();
-        spriteR.sprite = closedDoors;
-
-        doorCollider = GetComponent<BoxCollider2D>();
+        spriteR = gameObject.GetComponent<SpriteRenderer>();
+        spriteR.sprite = disabledSprite;
 
         if(InteractsNAND.Length > 0) {
             wasNANDchosen = true;
@@ -42,19 +49,42 @@ public class Doors : MonoBehaviour
             wasNANDchosen = false;
         }
         else {
-            ForceClose();
-            Debug.Log("No logical inputs were connected");
+            isEnabled = true;
         }
     }
 
     // Update is called once per frame
     void Update()
     {
-        opened = GetInteractsState();
-        UpdateState();
+        isEnabled = GetInteractsState();
+
+        if(isMain) {
+            spriteR.sprite = mainSprite;
+        }
+        else if(isActive) {
+            if(isEnabled) {
+                spriteR.sprite = enabledSpriteActive;
+            }
+            else {
+                spriteR.sprite = disabledSpriteActive;
+            }
+        }
+        else {
+            if(isEnabled) {
+                spriteR.sprite = enabledSprite;
+            }
+            else {
+                spriteR.sprite = disabledSprite;
+            }
+        }
     }
 
+
     bool GetInteractsState() {
+        if(isMain) {
+            return true;
+        }
+
         bool result = true;
         bool first = true;
 
@@ -82,28 +112,16 @@ public class Doors : MonoBehaviour
         return result;
     }
 
-    void UpdateState() {
-        if(!force) {
-            if(opened) {
-                spriteR.sprite = openedDoors;
-                doorCollider.enabled = false;
-            }
-            else {
-                spriteR.sprite = closedDoors;
-                doorCollider.enabled = true;
-            }
-        }
+    public void setActive(bool newstate) {
+        isActive = newstate;
     }
 
-    void ForceOpen() {
-        spriteR.sprite = openedDoors;
-        doorCollider.enabled = false;
-        force = true;
+    public bool IsEnabled() {
+        return isEnabled;
     }
 
-    void ForceClose() {
-        spriteR.sprite = closedDoors;
-        doorCollider.enabled = true;
-        force = false;
+    public Vector3 GetCheckpoint() {
+        Bounds bounds = gameObject.GetComponent<Collider2D>().bounds;
+        return bounds.center + offset;
     }
 }

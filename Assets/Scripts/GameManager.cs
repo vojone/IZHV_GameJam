@@ -7,6 +7,8 @@ public class GameManager : MonoBehaviour
 
     public Vector3 spawnPoint = new Vector3(2.0f, 1.0f, 1.0f);
 
+    public GameObject mainTimeCheckpoint = null;
+
     public GameObject playerPrefab;
 
     public GameObject mainCamera;
@@ -22,6 +24,8 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         var player = Instantiate(playerPrefab, spawnPoint, Quaternion.identity);
+
+        player.GetComponent<Player>().mainTimeCheckpoint = mainTimeCheckpoint;
         players.Add(player);
 
         mainCamera.GetComponent<CameraController>().SetPlayer(player);

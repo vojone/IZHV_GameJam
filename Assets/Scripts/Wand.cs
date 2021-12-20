@@ -26,8 +26,6 @@ public class Wand : MonoBehaviour
 
     public ParticleSystem chargingPS;
 
-    bool isPSPlaying = false;
-
 
     // Start is called before the first frame update
     void Start()

@@ -32,4 +32,12 @@ public class Utils : MonoBehaviour
     public static bool CoinFlip() {
         return Random.value >= 0.5 ? true : false;
     }
+
+    public static bool NAND(bool a, bool b) {
+        return !a && !b;
+    }
+
+    public static bool NOR(bool a, bool b) {
+        return !a || !b;
+    }
 }

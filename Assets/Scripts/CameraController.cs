@@ -14,7 +14,7 @@ public class CameraController : MonoBehaviour
     ///</summary>
     public Vector3 additionalOffset = Vector3.zero;
 
-    public float adjustSpeed = 0.02f;
+    public float adjustSpeed = 0.04f;
 
     public float fastModeAdjustSpeed = 0.1f;
 
@@ -22,7 +22,7 @@ public class CameraController : MonoBehaviour
 
     public Vector3 tolerance = new Vector2(0.2f, 0.2f);
 
-    public Vector3 innerTolerance = new Vector2(0.02f, 0.02f);
+    public Vector3 innerTolerance = new Vector2(0.05f, 0.05f);
 
     private Vector3 centeredPosition;
 
@@ -60,6 +60,8 @@ public class CameraController : MonoBehaviour
 
     void LateUpdate()
     {
+        currentSpeed = adjustSpeed*player.GetComponent<Player>().speed;
+
         if(player != null) {
             centeredPosition = GetCenteredPosition();
             diff = GetDiff();

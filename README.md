@@ -17,12 +17,9 @@ Roguelike adventure.
 
 ## Used Assets
 
-+ www.0x72.itch.io/dungeontileset-ii  (Used one of tilesets. Thank you!)
-
-+ www.kenney.nl (Used one of tilesets. Thank you!)
++ www.0x72.itch.io/dungeontileset-ii  (Used one of tilesets with floor, walls, creatures... Thank you!)
 
 + www.dafont.com/vcr-osd-mono.font (Used font. Thanks!)
-
 
 ## Other used resources and tools
 

@@ -6,7 +6,9 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
 
-    public Vector3 timeCheckPoint = new Vector3(2.0f, 1.0f, 0.0f);
+    public GameObject timeCheckPoint;
+
+    public GameObject mainTimeCheckpoint;
 
     /// <summary>
     /// Number of hits that can player get before he dies.
@@ -124,6 +126,19 @@ public class Player : MonoBehaviour
                     el.Toggle();
                 }
             }
+
+            if(currentObjectToInteract.CompareTag("TimeCheckpoint")) {
+                TimeCheckpoint el = currentObjectToInteract.GetComponent<TimeCheckpoint>();
+
+                if(timeCheckPoint != null) {
+                    timeCheckPoint.GetComponent<TimeCheckpoint>().setActive(false);
+                }
+
+                if(el.IsEnabled()) {
+                    timeCheckPoint = currentObjectToInteract;
+                    timeCheckPoint.GetComponent<TimeCheckpoint>().setActive(true);
+                }
+            }
         }
     }
 
@@ -137,6 +152,10 @@ public class Player : MonoBehaviour
         cursorWandCharging = Resources.LoadAll<Texture2D>(cursorWandChargingPath);
         if(cursorWandCharging.Length == 0) {
             Debug.Log("Cannot load wand cursor textures!");
+        }
+
+        if(timeCheckPoint != null) {
+            timeCheckPoint.GetComponent<TimeCheckpoint>().setActive(true);
         }
 
         remainingTime = timeLoopLength;
@@ -182,9 +201,7 @@ public class Player : MonoBehaviour
             disappearing = true;
 
             if(remainingTime < -disappearAnimLength) {
-                Vector3 newPosition = timeCheckPoint;
-                transform.position = newPosition;
-                GameManager.Instance.FastCamMove();
+                MoveToCheckPoint();
 
                 disappearing = false;
                 appearing = true;
@@ -203,6 +220,25 @@ public class Player : MonoBehaviour
             disappearing = false;
             appearing = false;
         }
+    }
+
+
+    void MoveToCheckPoint() {
+        Vector3 newPosition;
+
+        if(timeCheckPoint != null && timeCheckPoint.GetComponent<TimeCheckpoint>().IsEnabled()) {
+            newPosition = timeCheckPoint.GetComponent<TimeCheckpoint>().GetCheckpoint();
+        }
+        else {
+            if(mainTimeCheckpoint == null) {
+                return;
+            }
+
+            newPosition = mainTimeCheckpoint.GetComponent<TimeCheckpoint>().GetCheckpoint();
+        }
+
+        transform.position = newPosition;
+        GameManager.Instance.FastCamMove();
     }
 
     void UpdatePosition() {
