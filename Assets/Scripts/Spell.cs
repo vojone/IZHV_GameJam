@@ -6,11 +6,15 @@ public class Spell : MonoBehaviour
 {
     public float speed = 7.5f;
 
+    public float spellPower = 1.0f;
+
     public string type = "";
 
-    public Vector3 spellSizeFactor = new Vector3(0.20f, 0.20f, 0.20f); 
+    public Vector3 maxSpellSize = new Vector3(0.3f, 0.3f, 0.3f); 
 
-    public float spell_dmg = 1;
+    public Vector3 minSpellSize = new Vector3(0.22f, 0.22f, 0.22f); 
+
+    public float maxSpellDamage = 2.0f;
 
     public string parentTag = "";
 
@@ -58,6 +62,14 @@ public class Spell : MonoBehaviour
         transform.localPosition += positionCorrection;
 
         //Set spell size
+        var spellSizeFactor = maxSpellSize*spellPower;
+        if(spellSizeFactor.x < minSpellSize.x ||
+           spellSizeFactor.y < minSpellSize.y ||
+           spellSizeFactor.z < minSpellSize.z)
+        {
+            spellSizeFactor = minSpellSize*spellPower;
+        }
+
         transform.localScale = spellSizeFactor;
         ExplosionParticleSystem.transform.localScale = spellSizeFactor;
         TailParticleSystem.transform.localScale = spellSizeFactor;
@@ -115,11 +127,11 @@ public class Spell : MonoBehaviour
         //Debug.Log("Collides with: " + other.gameObject);
 
         //Making parent object immune against spell
-        Debug.Log(!other.gameObject.CompareTag(parentTag));
-        if (!other.gameObject.CompareTag(parentTag) && other.gameObject.layer == LayerMask.NameToLayer("Blocking")) 
+        if (!other.gameObject.CompareTag(parentTag) && 
+            other.gameObject.layer == LayerMask.NameToLayer("Blocking")) 
         {
             if(other.gameObject.CompareTag("Enemy")) {
-                other.gameObject.GetComponent<Enemy>().Damage(type, spell_dmg);
+                other.gameObject.GetComponent<Enemy>().Damage(type, maxSpellDamage*spellPower);
             }
 
             DestroySpell();

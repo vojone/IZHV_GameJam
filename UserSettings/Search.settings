@@ -3,11 +3,11 @@ fetchPreview = true
 wantsMore = false
 keepOpen = false
 queryFolder = "Assets"
-onBoardingDoNotAskAgain = false
+onBoardingDoNotAskAgain = true
 showPackageIndexes = false
 showStatusBar = false
 scopes = {
-	"last_search.969B5199" = "project set"
+	"last_search.969B5199" = "sprite packer"
 	"OpenInspectorPreview.969B5199" = "0"
 	"currentGroup.969B5199" = "all"
 }
@@ -64,6 +64,7 @@ providers = {
 	}
 }
 recentSearches = [
+	"sprite packer"
 ]
 searchItemFavorites = [
 ]

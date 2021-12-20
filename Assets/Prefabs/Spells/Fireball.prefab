@@ -9759,7 +9759,7 @@ SpriteRenderer:
   m_SortingLayerID: 493928897
   m_SortingLayer: 6
   m_SortingOrder: 0
-  m_Sprite: {fileID: -638327626, guid: b16e5ce02e540d44da638458dcb90032, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 4eee0752321c4e045bcd965ce7a4d3ed, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -9787,7 +9787,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 4, y: 2}
+    oldSize: {x: 2, y: 2}
     newSize: {x: 4, y: 2}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -9809,19 +9809,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 6
+  spellPower: 1
   type: 
-  spellSizeFactor: {x: 0.2, y: 0.2, z: 0.2}
-  spell_dmg: 1
+  maxSpellSize: {x: 0.3, y: 0.3, z: 0.3}
+  minSpellSize: {x: 0.2, y: 0.2, z: 0.2}
+  maxSpellDamage: 2
   parentTag: 
   positionCorrection: {x: 0, y: 0, z: 0}
   maxLifetime: 5
   shootingDirection: {x: 1, y: 1}
-  sprite: {fileID: -638327626, guid: b16e5ce02e540d44da638458dcb90032, type: 3}
+  sprite: {fileID: 21300000, guid: 4eee0752321c4e045bcd965ce7a4d3ed, type: 3}
   particlesExplosion:
-  - {fileID: 21300000, guid: 19df03f683db5544eb4052ed1f3b6382, type: 3}
+  - {fileID: 21300000, guid: 6923b1de7db8ae14ba9484f283b0c5cc, type: 3}
   particlesTail:
-  - {fileID: 21300000, guid: 19df03f683db5544eb4052ed1f3b6382, type: 3}
+  - {fileID: 21300000, guid: 76a40cc4ed103d142806322c26874786, type: 3}
   ExplosionParticleSystem: {fileID: 407287492}
-  ExplosionPsr: {fileID: 754708513}
   TailParticleSystem: {fileID: 754708514}
-  TailPsr: {fileID: 407287491}

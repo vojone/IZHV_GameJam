@@ -12,6 +12,8 @@ public class Wand : MonoBehaviour
 
     public float maxCharge = 10.0f;
 
+    public float minCharge = 3.0f;
+
     private float currentCharge = 0.0f;
 
     /// <summary>
@@ -22,10 +24,15 @@ public class Wand : MonoBehaviour
     public Vector3 spellOffset = new Vector3(0.5f, -0.15f, 0.0f);
 
 
+    public ParticleSystem chargingPS;
+
+    bool isPSPlaying = false;
+
+
     // Start is called before the first frame update
     void Start()
     {
-        
+    
     }
 
     // Update is called once per frame
@@ -54,6 +61,10 @@ public class Wand : MonoBehaviour
         if(currentCharge > maxCharge) {
             currentCharge = maxCharge;
         }
+
+        if(!chargingPS.isPlaying) {
+            chargingPS.Play();
+        }
     }
 
     public void setEnergyTo(float energy) {
@@ -61,12 +72,19 @@ public class Wand : MonoBehaviour
     }
 
     public void Fire(Vector3 position, Vector2 direction, int author) {
+        chargingPS.Stop();
+
+        if(currentCharge < minCharge) {
+            return;
+        }
+
         //Debug.Log(direction);
 
         var spell = Instantiate(spellPrefab, position + spellOffset, Quaternion.identity);
 
         spell.GetComponent<Spell>().shootingDirection = new Vector2(direction.x, direction.y);
         spell.GetComponent<Spell>().parentTag = "Player";
+        spell.GetComponent<Spell>().spellPower = currentCharge/maxCharge;
 
         currentCharge = 0.0f;
     }
