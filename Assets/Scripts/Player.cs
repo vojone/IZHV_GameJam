@@ -20,6 +20,10 @@ public class Player : MonoBehaviour
 
     public float timeLoopLength = 60.0f;
 
+    public float disappearAnimLength = 1.5f;
+
+    public float appearAnimLength = 1.5f;
+
     private float remainingTime;
 
     /// <summary>
@@ -69,6 +73,12 @@ public class Player : MonoBehaviour
     private bool bounced = false;
 
     private Animator animator;
+
+    public bool moveEnable = true;
+
+    public bool disappearing = false;
+
+    public bool appearing = false;
 
     private Vector3 originalScale;
 
@@ -133,12 +143,29 @@ public class Player : MonoBehaviour
 
     void CheckRemainingTime() {
         if(remainingTime <= 0.0f) {
-            if(remainingTime <= -respawnTimeGap) {
+            moveEnable = false;
+            disappearing = true;
+
+            if(remainingTime < -disappearAnimLength) {
                 Vector3 newPosition = timeCheckPoint;
                 transform.position = newPosition;
+                GameManager.Instance.FastCamMove();
 
-                remainingTime = timeLoopLength;
+                disappearing = false;
+                appearing = true;
+
+                if(remainingTime < -(disappearAnimLength + appearAnimLength)) {
+
+                    remainingTime = timeLoopLength;
+                    moveEnable = true;
+                    disappearing = false;
+                    appearing = false;
+                }
             }
+        }
+        else {
+            disappearing = false;
+            appearing = false;
         }
     }
 
@@ -153,7 +180,9 @@ public class Player : MonoBehaviour
             var hit2 = Physics2D.BoxCast(bounds.center, bounds.size*1.1f, 0.0f, new Vector3(movement.x*1.3f, movement.y, 0), movement.magnitude*1.1f);
             var hit3 = Physics2D.BoxCast(bounds.center, bounds.size*1.1f, 0.0f, new Vector3(movement.x, movement.y*1.3f, 0), movement.magnitude*1.1f);
             if(hit1.collider == null && hit2.collider == null && hit3.collider == null) {
-                transform.Translate(movement);
+                if(moveEnable) {
+                    transform.Translate(movement);
+                }
             }
             else {
                 movement = Vector3.zero;
@@ -212,6 +241,8 @@ public class Player : MonoBehaviour
 		}
 
         animator.SetFloat("Speed", movementSpeed);
+        animator.SetBool("Appearing", appearing);
+        animator.SetBool("Disappearing", disappearing);
 		animator.SetBool("TakingDmg", takingDmg);
     }
 

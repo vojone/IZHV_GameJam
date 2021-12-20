@@ -2973,6 +2973,14 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 468316371706168938, guid: d46c2a7592a66924c9dffc0f214e12c0, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 468316371706168938, guid: d46c2a7592a66924c9dffc0f214e12c0, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 468316371706168938, guid: d46c2a7592a66924c9dffc0f214e12c0, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1.45
       objectReference: {fileID: 0}
@@ -3020,6 +3028,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 468316371880324067, guid: d46c2a7592a66924c9dffc0f214e12c0, type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 468316371880324068, guid: d46c2a7592a66924c9dffc0f214e12c0, type: 3}
       propertyPath: m_Size.x
       value: 0.6225568
@@ -3046,7 +3058,15 @@ PrefabInstance:
       objectReference: {fileID: 2800000, guid: 2b48ece7f3febd146991e5111f3633c8, type: 3}
     - target: {fileID: 468316371880324071, guid: d46c2a7592a66924c9dffc0f214e12c0, type: 3}
       propertyPath: timeLoopLength
-      value: 10
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 468316371880324071, guid: d46c2a7592a66924c9dffc0f214e12c0, type: 3}
+      propertyPath: appearAnimLength
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 468316371880324071, guid: d46c2a7592a66924c9dffc0f214e12c0, type: 3}
+      propertyPath: disappearAnimLength
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 468316371880324071, guid: d46c2a7592a66924c9dffc0f214e12c0, type: 3}
       propertyPath: cursorWandChargingPath

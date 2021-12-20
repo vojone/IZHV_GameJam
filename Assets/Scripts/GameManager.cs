@@ -7,9 +7,13 @@ public class GameManager : MonoBehaviour
 
     public Vector3 spawnPoint = new Vector3(2.0f, 1.0f, 1.0f);
 
+    public Camera mainCamera;
+
     private bool gameLost = false;
 
     private bool gameStarted = true;
+
+    public static GameManager Instance;
 
     private List<GameObject> players = new List<GameObject>();
     // Start is called before the first frame update
@@ -18,14 +22,31 @@ public class GameManager : MonoBehaviour
         
     }
 
+    void Awake()
+    {
+        if(Instance == null) {
+            Debug.Log("Created Instance");
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else if(Instance != this && Instance != null) {
+            Destroy(gameObject);
+        }
+    }
+
     // Update is called once per frame
     void Update()
     {
         
     }
-
     public Vector3 GetSpawnPoint() {
         return spawnPoint;
+    }
+
+    public void FastCamMove() {
+        mainCamera.GetComponent<CameraController>().setFastMode(true);
+        mainCamera.GetComponent<CameraController>().Adjust();
+        mainCamera.GetComponent<CameraController>().setFastMode(false);
     }
 
 

@@ -16,6 +16,10 @@ public class CameraController : MonoBehaviour
 
     public float adjustSpeed = 0.025f;
 
+    public float fastModeAdjustSpeed = 1.0f;
+
+    private float currentSpeed;
+
     public Vector3 tolerance = new Vector2(0.12f, 0.12f);
 
     public Vector3 innerTolerance = new Vector2(0.08f, 0.08f);
@@ -38,6 +42,8 @@ public class CameraController : MonoBehaviour
         offset = transform.position - player.transform.position;
 
         centeredPosition = GetCenteredPosition();
+
+        currentSpeed = adjustSpeed;
     }
 
     void LateUpdate()
@@ -79,11 +85,20 @@ public class CameraController : MonoBehaviour
         return v.normalized;
     }
 
-    void Adjust(bool transitioned = true) {
+    public void setFastMode(bool turnOn) {
+        if(turnOn) {
+            currentSpeed = fastModeAdjustSpeed;
+        }
+        else {
+            currentSpeed = adjustSpeed;
+        }
+    }
+
+    public void Adjust(bool transitioned = true) {
         if(transitioned) { //Smooth slide to players position
             float interpolCoef = diff.magnitude > innerTolerance.x*2 || diff.magnitude > innerTolerance.y*2 ? 1.0f : diff.magnitude;
 
-            transform.position += movement*adjustSpeed*interpolCoef;
+            transform.position += movement*currentSpeed*interpolCoef;
         }
         else { //Immediate jump to players position
             transform.position = centeredPosition;

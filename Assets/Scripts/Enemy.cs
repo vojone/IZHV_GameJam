@@ -5,6 +5,10 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
 
+    public float HP = 10.0f;
+
+    public float speed = 1.0f;
+
     private float movementSpeed = 1.0f;
 
     public bool attacking = false;
@@ -21,8 +25,17 @@ public class Enemy : MonoBehaviour
         
     }
 
+    void FixedUpdate() {
+        CheckForPlayer();
+    }
+
+    void CheckForPlayer() {
+        float distance;
+        GameManager.Instance.NearestPlayer(transform.position, out distance);
+    }
+
 
     void Animate() {
-        
+
     }
 }
