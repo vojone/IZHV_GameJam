@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour
 
     public Vector3 spawnPoint = new Vector3(2.0f, 1.0f, 1.0f);
 
-    public Camera mainCamera;
+    public GameObject mainCamera;
 
     private bool gameLost = false;
 
@@ -45,7 +45,7 @@ public class GameManager : MonoBehaviour
 
     public void FastCamMove() {
         mainCamera.GetComponent<CameraController>().setFastMode(true);
-        mainCamera.GetComponent<CameraController>().Adjust();
+        mainCamera.GetComponent<CameraController>().Adjust(true);
         mainCamera.GetComponent<CameraController>().setFastMode(false);
     }
 

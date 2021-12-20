@@ -14,15 +14,15 @@ public class CameraController : MonoBehaviour
     ///</summary>
     public Vector3 additionalOffset = Vector3.zero;
 
-    public float adjustSpeed = 0.025f;
+    public float adjustSpeed = 0.02f;
 
-    public float fastModeAdjustSpeed = 1.0f;
+    public float fastModeAdjustSpeed = 0.1f;
 
     private float currentSpeed;
 
-    public Vector3 tolerance = new Vector2(0.12f, 0.12f);
+    public Vector3 tolerance = new Vector2(0.4f, 0.4f);
 
-    public Vector3 innerTolerance = new Vector2(0.08f, 0.08f);
+    public Vector3 innerTolerance = new Vector2(0.02f, 0.02f);
 
     private Vector3 centeredPosition;
 
@@ -96,9 +96,26 @@ public class CameraController : MonoBehaviour
 
     public void Adjust(bool transitioned = true) {
         if(transitioned) { //Smooth slide to players position
-            float interpolCoef = diff.magnitude > innerTolerance.x*2 || diff.magnitude > innerTolerance.y*2 ? 1.0f : diff.magnitude;
+            float interpolCoef = diff.magnitude*currentSpeed;
+            
+            if(diff.magnitude*currentSpeed > innerTolerance.x*2 || 
+               diff.magnitude*currentSpeed > innerTolerance.y*2) {
+                interpolCoef = 1.0f;
+            }
 
-            transform.position += movement*currentSpeed*interpolCoef;
+            Vector3 translation = movement*interpolCoef;
+
+            // Debug.Log(diff);
+
+            if(Mathf.Abs(translation.x) > Mathf.Abs(diff.x)) {
+                translation.x = centeredPosition.x - transform.position.x;
+            }
+
+            if(Mathf.Abs(translation.y) > Mathf.Abs(diff.y)) {
+                translation.y = centeredPosition.y - transform.position.y;
+            }
+        
+            transform.position += translation;
         }
         else { //Immediate jump to players position
             transform.position = centeredPosition;
