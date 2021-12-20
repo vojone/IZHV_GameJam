@@ -17,7 +17,7 @@ public class Enemy : MonoBehaviour
 
     public int pathOptions = 8;
 
-    public float visionRadius = 3.0f; 
+    public float visionRadius = 4.0f; 
 
     public float defTimeToWake = 3.0f;
 
@@ -35,7 +35,11 @@ public class Enemy : MonoBehaviour
 
     private GameObject attackTarget; 
 
+    public float TimeToLostTarget = 5.0f;
+
     private Animator animator;
+
+    private float curTimeToLostTarget;
 
     private float currentAttackCooldown;
 
@@ -49,6 +53,8 @@ public class Enemy : MonoBehaviour
         currentAttackCooldown = attackCooldown;
 
         animator = gameObject.GetComponent<Animator>();
+
+        curTimeToLostTarget = TimeToLostTarget;
     }
 
     // Update is called once per frame
@@ -113,18 +119,26 @@ public class Enemy : MonoBehaviour
     }
 
 
-    public void Damage(string type, float damagePower) {
+    public void Damage(string type, float damagePower, bool fromPlayer = true) {
+        if(fromPlayer) {
+            CheckForPlayer(false);
+        }
+
         takingDmg = true;
 
         HP -= damagePower;
 
-        if(HP < 0.0f) {
+        if(HP <= 0.0f) {
             HP = 0.0f;
         }
     }
 
     void UpdateCharacter() {
         currentAttackCooldown -= Time.deltaTime;
+
+        curTimeToLostTarget -= Time.deltaTime;
+
+
         attacking = false;
         takingDmg = false;
 
@@ -153,8 +167,12 @@ public class Enemy : MonoBehaviour
             }
             else {
                 //Debug.Log("Distance is too big");
-                hasTarget = false;
-                timeToWake = defTimeToWake;
+
+                if(curTimeToLostTarget <= 0.0f) {
+                    hasTarget = false;
+                    timeToWake = defTimeToWake;
+                    curTimeToLostTarget = TimeToLostTarget;
+                }
             }
         }
         else {

@@ -7,7 +7,7 @@ onBoardingDoNotAskAgain = true
 showPackageIndexes = false
 showStatusBar = false
 scopes = {
-	"last_search.969B5199" = "sprite packer"
+	"last_search.969B5199" = "shaderGra"
 	"OpenInspectorPreview.969B5199" = "0"
 	"currentGroup.969B5199" = "all"
 }

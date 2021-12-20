@@ -8,6 +8,8 @@ public class Spell : MonoBehaviour
 
     public float spellPower = 1.0f;
 
+    public bool fromPlayer = true;
+
     public string type = "";
 
     public Vector3 maxSpellSize = new Vector3(0.3f, 0.3f, 0.3f); 
@@ -131,7 +133,11 @@ public class Spell : MonoBehaviour
             other.gameObject.layer == LayerMask.NameToLayer("Blocking")) 
         {
             if(other.gameObject.CompareTag("Enemy")) {
-                other.gameObject.GetComponent<Enemy>().Damage(type, maxSpellDamage*spellPower);
+                other.gameObject.GetComponent<Enemy>().Damage(type, maxSpellDamage*spellPower, fromPlayer);
+            }
+            
+            if(other.gameObject.CompareTag("Player")) {
+                other.gameObject.GetComponent<Player>().Damage(type, maxSpellDamage*spellPower);
             }
 
             DestroySpell();
