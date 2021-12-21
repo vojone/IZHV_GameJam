@@ -15,8 +15,6 @@ public class Enemy : MonoBehaviour
 
     public float damage = 1.0f;
 
-    public int pathOptions = 8;
-
     public float visionRadius = 4.0f; 
 
     public float defTimeToWake = 3.0f;
@@ -43,7 +41,21 @@ public class Enemy : MonoBehaviour
 
     private float currentAttackCooldown;
 
+    public GameObject stateShow;
+
+    private SpriteRenderer stateShowR;
+
+    public Sprite confusedSprite;
+
+    public Sprite warningSprite;
+
+    public ParticleSystem deadExplosionPS;
+
     private bool takingDmg = false;
+
+    private bool dying = false;
+
+    public float timeToDie = 0.6f;
 
     // Start is called before the first frame update
     void Start()
@@ -53,6 +65,9 @@ public class Enemy : MonoBehaviour
         currentAttackCooldown = attackCooldown;
 
         animator = gameObject.GetComponent<Animator>();
+
+        stateShowR = stateShow.GetComponent<SpriteRenderer>();
+        stateShowR.sprite = null;
 
         curTimeToLostTarget = TimeToLostTarget;
     }
@@ -64,18 +79,27 @@ public class Enemy : MonoBehaviour
     }
 
     void FixedUpdate() {
-        CheckForPlayer(true);
+        if(dying) {
+            timeToDie -= Time.deltaTime;
 
-        if(attackTarget != null && hasTarget) {
-            movementDirection = GetMoveVector();
+            if(timeToDie <= 0.0f) {
+                Destroy(gameObject);
+            }
         }
         else {
-            movementDirection = Vector2.zero;
-        }
+            CheckForPlayer(true);
 
-        Move();
-        Animate();
-        UpdateCharacter();
+            if(attackTarget != null && hasTarget) {
+                movementDirection = GetMoveVector();
+            }
+            else {
+                movementDirection = Vector2.zero;
+            }
+
+            Move();
+            Animate();
+            UpdateCharacter();
+        }
     }
 
 
@@ -112,7 +136,7 @@ public class Enemy : MonoBehaviour
     public void Attack(GameObject target) {
         attacking = true;
 
-        if(currentAttackCooldown <= 0) {
+        if(currentAttackCooldown <= 0 && target != null) {
             target.GetComponent<Player>().Damage(dmgType, damage);
             currentAttackCooldown = attackCooldown;
         }
@@ -143,7 +167,13 @@ public class Enemy : MonoBehaviour
         takingDmg = false;
 
         if(HP == 0.0f) {
-            Destroy(gameObject);
+            deadExplosionPS.Play();
+
+            gameObject.GetComponent<BoxCollider2D>().enabled = false;
+            gameObject.GetComponent<SpriteRenderer>().enabled = false;
+            stateShowR.enabled = false;
+
+            dying = true;
         }
     }
 
@@ -163,21 +193,31 @@ public class Enemy : MonoBehaviour
                     //Debug.Log("I am going to kill player");
                     hasTarget = true;
                     timeToWake = defTimeToWake;
+                    stateShowR.sprite = null;
+                }
+                else {
+                    stateShowR.sprite = warningSprite;
                 }
             }
             else {
                 //Debug.Log("Distance is too big");
-
+    
                 if(curTimeToLostTarget <= 0.0f) {
                     hasTarget = false;
                     timeToWake = defTimeToWake;
                     curTimeToLostTarget = TimeToLostTarget;
+                    stateShowR.sprite = null;
+                }
+                else {
+                    stateShowR.sprite = confusedSprite;
                 }
             }
         }
         else {
             hasTarget = false;
             timeToWake = defTimeToWake;
+            curTimeToLostTarget = TimeToLostTarget;
+            stateShowR.sprite = null;
         }
     } 
 

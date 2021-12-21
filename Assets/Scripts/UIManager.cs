@@ -33,6 +33,8 @@ public class UIManager : MonoBehaviour
 
     public Sprite emptyHeart; 
 
+    public bool initialized = false;
+
     private SpriteRenderer watchRenderer;
     // Start is called before the first frame update
     void Start()
@@ -49,6 +51,8 @@ public class UIManager : MonoBehaviour
 
         watchRenderer.sprite = watchesSprites[0];
         remainingTimeDisplay.text = "0:00";
+
+        initialized = true;
     }
 
     // Update is called once per frame
@@ -102,8 +106,8 @@ public class UIManager : MonoBehaviour
 
             activeUIindex = index;
             if(index > -1) {
-                Debug.Log(index);
                 UIs[index].SetActive(true);
+                Debug.Log(index);
             }
         }
     }
@@ -146,11 +150,16 @@ public class UIManager : MonoBehaviour
 
                 perc = perc - percStep;
                 
-                if(perc > 0.0f) {
+                if(perc >= 0.0f) {
                     HealthBarRenderers[i].sprite = fullHeart;
                 }
                 else {
-                    HealthBarRenderers[i].sprite = emptyHeart;
+                    if(perc < 0.0f && perc > -percStep) {
+                        HealthBarRenderers[i].sprite = halfHeart;
+                    }
+                    else {
+                        HealthBarRenderers[i].sprite = emptyHeart;
+                    }
 
                     empty = true;
                 }

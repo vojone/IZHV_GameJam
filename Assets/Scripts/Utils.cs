@@ -29,15 +29,15 @@ public class Utils : MonoBehaviour
         return result;
     }
 
-    public static bool CoinFlip() {
-        return Random.value >= 0.5 ? true : false;
+    public static bool CoinFlip(float truePossibility = 0.5f) {
+        return Random.value <= truePossibility ? true : false;
     }
 
     public static bool NAND(bool a, bool b) {
-        return !a && !b;
+        return !(a && b);
     }
 
     public static bool NOR(bool a, bool b) {
-        return !a || !b;
+        return !(a || b);
     }
 }

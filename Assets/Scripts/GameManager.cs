@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -36,6 +37,11 @@ public class GameManager : MonoBehaviour
 
         gameStarted = false;
         gamePaused = false;
+
+        //WaitForUIManager
+        while(!UI.GetComponent<UIManager>().initialized) {
+        }
+
         TogglePause();
     }
 
@@ -61,6 +67,9 @@ public class GameManager : MonoBehaviour
     }
 
     public void Restart() {
+        Scene scene = SceneManager.GetActiveScene();
+        SceneManager.LoadScene(scene.name);
+
         Start();
     }
 
@@ -132,6 +141,8 @@ public class GameManager : MonoBehaviour
     public void OnExit() {
         #if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false;
+        #elif UNITY_WEBGL
+            Application.ExternalEval("window.location.href=\"about:blank\";");
         #else
             Application.Quit();
         #endif
@@ -149,12 +160,14 @@ public class GameManager : MonoBehaviour
     void Pause() {
         Time.timeScale = 0;
         gamePaused = true;
+
         UI.GetComponent<UIManager>().setUIPage(0);
     }
 
     void Resume() {
         Time.timeScale = 1;
         gamePaused = false;
+
         UI.GetComponent<UIManager>().setUIPage(1);
     }
 }

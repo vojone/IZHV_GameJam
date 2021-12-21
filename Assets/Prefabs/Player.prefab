@@ -4780,7 +4780,7 @@ ParticleSystemRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 493928897
-  m_SortingLayer: 6
+  m_SortingLayer: 7
   m_SortingOrder: 0
   m_RenderMode: 0
   m_MeshDistribution: 0
@@ -9650,7 +9650,7 @@ ParticleSystemRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 493928897
-  m_SortingLayer: 6
+  m_SortingLayer: 7
   m_SortingOrder: 0
   m_RenderMode: 0
   m_MeshDistribution: 0
@@ -9916,7 +9916,7 @@ MonoBehaviour:
   chargingSpellHandicap: 3
   headingRight: 1
   wand: {fileID: 468316370913722380}
-  cursorDefault: {fileID: 2800000, guid: 2b48ece7f3febd146991e5111f3633c8, type: 3}
+  cursorDefault: {fileID: 2800000, guid: 3da36c904938f7c4681ff075dbe9bc02, type: 3}
   cursorWandChargingPath: WandCursor
   cursorInfo: {fileID: 0}
   BloodParticleSystem: {fileID: 1760748523}
