@@ -7,9 +7,9 @@ onBoardingDoNotAskAgain = true
 showPackageIndexes = false
 showStatusBar = false
 scopes = {
-	"last_search.969B5199" = "shaderGra"
+	"last_search.969B5199" = "collider"
 	"OpenInspectorPreview.969B5199" = "0"
-	"currentGroup.969B5199" = "all"
+	"currentGroup.969B5199" = "settings"
 }
 providers = {
 	expression = {
@@ -64,6 +64,7 @@ providers = {
 	}
 }
 recentSearches = [
+	"collider"
 	"sprite packer"
 ]
 searchItemFavorites = [

@@ -1,5 +1,4 @@
 # Stuck
-
 ___
 
 ## Outline
@@ -21,6 +20,9 @@ ___
 
 ___
 
+![From game](https://github.com/vojone/IZHV_GameJam/blob/master/InGame1.png)
+![From game](https://github.com/vojone/IZHV_GameJam/blob/master/InGame2.png)
+
 ## About
 
 Simple 2D dungeon crawler game with roguelike and adventure elements. The demoversion was created during Game Jam in Introduction to Game Development course in december 2021. My theme for this Game Jam was **Stuck in a loop**.
@@ -29,7 +31,10 @@ Simple 2D dungeon crawler game with roguelike and adventure elements. The demove
 
 It is only demo version, so there is only one handmade level to demostrate game concept. Therefore there is only one simple level. If you leave it you should win and see text "You are not stuck". 
 
-Hint: Levers in main room are connected to NOR logical function and the **off state demonstrates lever on left side**.  
+Hint: Levers in main room (in green circles on picture below) are connected to NOR logical function and the **off state demonstrates lever on left side**.  
+
+![From game](https://github.com/vojone/IZHV_GameJam/blob/master/Hint.png)
+
 
 ## Version
 
@@ -54,11 +59,13 @@ ___
 ### UI
 There are two UI modes:
 
-#### Menu
+1. Menu
 
 Control state of game or show other information by clicking buttons.
 
-#### InGame UI
+![From game](https://github.com/vojone/IZHV_GameJam/blob/master/MainMenu.png)
+
+2. InGame UI
 
 Shows you remaining time that you have (left down corner) and remaining HP of your character (hearts in left down corner)
 
