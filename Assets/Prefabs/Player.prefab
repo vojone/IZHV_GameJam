@@ -9731,7 +9731,7 @@ MonoBehaviour:
   maxCharge: 10
   minCharge: 3
   chargingSpeed: 8
-  spellOffset: {x: 0.5, y: 0, z: 0}
+  spellOffset: {x: 0.15, y: -0.15, z: 0}
   chargingPS: {fileID: 80020377}
 --- !u!1 &468316371880324057
 GameObject:

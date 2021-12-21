@@ -13,6 +13,9 @@ public class TimeCheckpoint : MonoBehaviour
     public Vector3 offset = new Vector3(0.0f, 0.0f, 0.0f);
 
 
+    public bool defaultState = true;
+
+    
     public Sprite mainSprite;
 
     public Sprite disabledSprite;
@@ -88,24 +91,33 @@ public class TimeCheckpoint : MonoBehaviour
         bool result = true;
         bool first = true;
 
+        if((InteractsNOR.Length == 0 && !wasNANDchosen) ||
+           (InteractsNAND.Length == 0 && wasNANDchosen)) {
+            return defaultState;
+        }
+
         if(wasNANDchosen) {
-            foreach(var input in InteractsNAND) {
+            for(int i = 0; i < InteractsNAND.Length; i++) {
                 if(first) {
-                    result = input.GetComponent<InteractiveElement>().GetState();
+                    result = InteractsNAND[i].GetComponent<InteractiveElement>().GetState();
                 }
                 else {
-                    result = Utils.NAND(result, input.GetComponent<InteractiveElement>().GetState());
+                    result = Utils.NAND(result, InteractsNAND[i].GetComponent<InteractiveElement>().GetState());
                 }
+
+                first = false;
             }
         }
         else {
-            foreach(var input in InteractsNOR) {
+            for(int i = 0; i < InteractsNOR.Length; i++) {
                 if(first) {
-                    result = input.GetComponent<InteractiveElement>().GetState();
+                    result = InteractsNOR[i].GetComponent<InteractiveElement>().GetState();
                 }
                 else {
-                    result = Utils.NOR(result, input.GetComponent<InteractiveElement>().GetState());
+                    result = Utils.NOR(result, InteractsNOR[i].GetComponent<InteractiveElement>().GetState());
                 }
+
+                first = false;
             }
         }
 

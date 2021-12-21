@@ -92,7 +92,7 @@ public class Player : MonoBehaviour
 
     PlayerInput controls;
 
-    private List<GameObject> objectsToInteract = new List<GameObject>();
+    public List<GameObject> objectsToInteract = new List<GameObject>();
 
     void Awake()
     {
@@ -134,6 +134,7 @@ public class Player : MonoBehaviour
             }
 
             if(currentObjectToInteract.CompareTag("TimeCheckpoint")) {
+
                 TimeCheckpoint el = currentObjectToInteract.GetComponent<TimeCheckpoint>();
 
                 if(timeCheckPoint != null) {
@@ -196,8 +197,11 @@ public class Player : MonoBehaviour
 
         HP -= damagePower;
 
-        if(HP < 0.0f) {
+        if(HP <= 0.0f) {
+            Debug.Log("Game over!");
             HP = 0.0f;
+
+            GameManager.Instance.GameOver();
         }
     }
 
@@ -356,6 +360,13 @@ public class Player : MonoBehaviour
         }
 
         if(other.gameObject.layer == LayerMask.NameToLayer("Interactive")) {
+
+            if(other.gameObject.CompareTag("TimeCheckpoint")) {
+                if(other.gameObject.GetComponent<TimeCheckpoint>().isMain) {
+                    return;
+                }
+            }
+
             objectsToInteract.Add(other.gameObject);
             //Debug.Log("Listening for interaction");
         }

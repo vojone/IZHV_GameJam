@@ -11,13 +11,17 @@ public class UIManager : MonoBehaviour
 
     public int activeUIindex = -1;
 
+    public int defaultPageIndex = 0;
+
     public TMP_Text remainingTimeDisplay;
 
     public TMP_Text gameName;
 
     public TMP_Text startButtonText;
 
-    public GameObject icon;
+    public GameObject icon1;
+
+    public GameObject icon2;
 
     public GameObject watches;
 
@@ -31,9 +35,14 @@ public class UIManager : MonoBehaviour
 
     public Sprite halfHeart;
 
-    public Sprite emptyHeart; 
+    public Sprite emptyHeart;
+
+    public GameObject interactionIndicator;
 
     public bool initialized = false;
+
+
+    public GameObject startButton;
 
     private SpriteRenderer watchRenderer;
     // Start is called before the first frame update
@@ -45,8 +54,17 @@ public class UIManager : MonoBehaviour
             HealthBarRenderers.Add(heart.GetComponent<SpriteRenderer>());
         }
 
+        int i = 0;
         foreach(var ui in UIs) {
-            ui.SetActive(false);
+            if(i == defaultPageIndex) {
+                ui.SetActive(true);
+                activeUIindex = i;
+            }
+            else {
+                ui.SetActive(false);
+            }
+            
+            i++;
         }
 
         watchRenderer.sprite = watchesSprites[0];
@@ -54,30 +72,53 @@ public class UIManager : MonoBehaviour
 
         initialized = true;
     }
+    
 
     // Update is called once per frame
     void Update()
     {
         UpdateTime();
         UpdateHealthBar();
+        UpdateIntInidicator();
         UpdateButton();
         UpdateTitle();
+    }
+
+    void UpdateIntInidicator() {
+        if(GameManager.Instance.GetPrimaryPlayer() != null) {
+            if(GameManager.Instance.GetPrimaryPlayer().GetComponent<Player>().objectsToInteract.Count > 0) {
+                interactionIndicator.SetActive(true);
+            }
+            else {
+                interactionIndicator.SetActive(false);
+            }
+        }
     }
 
     public void UpdateTitle() {
         if(GameManager.Instance.gameLost) {
             gameName.text = "Game over";
-            icon.SetActive(false);
+            icon1.SetActive(false);
+            icon2.SetActive(false);
+        }
+        else if(GameManager.Instance.gameWon) {
+            gameName.text = "You are not stuck!";
+            icon1.SetActive(false);
+            icon2.SetActive(false);
         }
         else {
             gameName.text = "Stuck";
-            icon.SetActive(true);
+            icon1.SetActive(true);
+            icon2.SetActive(true);
         }
     }
 
     public void UpdateButton() {
         if(GameManager.Instance.gameLost) {
-            startButtonText.text = "Restart game";
+            startButton.SetActive(false);
+        }
+        else if(GameManager.Instance.gameWon) {
+            startButton.SetActive(false);
         }
         else if(!GameManager.Instance.gameLost && GameManager.Instance.gameStarted) {
             startButtonText.text = "Resume";
@@ -100,12 +141,12 @@ public class UIManager : MonoBehaviour
             return;
         }
         else {
-            if(activeUIindex > -1) {
+            if(activeUIindex >= 0) {
                 UIs[activeUIindex].SetActive(false);
             }
 
             activeUIindex = index;
-            if(index > -1) {
+            if(index >= 0) {
                 UIs[index].SetActive(true);
                 Debug.Log(index);
             }
@@ -119,6 +160,14 @@ public class UIManager : MonoBehaviour
 
             float perc = current/totalTime;
             int newSpriteIndex = (watchesSprites.Count - 1) - Mathf.RoundToInt(perc*(watchesSprites.Count-1));
+
+            if(newSpriteIndex < 0) {
+                newSpriteIndex = 0;
+            }
+            else if(newSpriteIndex > watchesSprites.Count - 1) {
+                newSpriteIndex = watchesSprites.Count-1;
+            }
+
             watchRenderer.sprite = watchesSprites[newSpriteIndex];
             
             int seconds = Mathf.RoundToInt(current) % 60;
@@ -127,7 +176,7 @@ public class UIManager : MonoBehaviour
             seconds = seconds < 0 ? 0 : seconds;
 
             string secondsStr = seconds.ToString();
-            secondsStr = secondsStr.Length <= 1 ? "0" + secondsStr : secondsStr ;
+            secondsStr = secondsStr.Length == 1 ? "0" + secondsStr : secondsStr ;
 
             remainingTimeDisplay.text = minutes.ToString() + ":" + secondsStr;
         }
@@ -154,7 +203,7 @@ public class UIManager : MonoBehaviour
                     HealthBarRenderers[i].sprite = fullHeart;
                 }
                 else {
-                    if(perc < 0.0f && perc > -percStep) {
+                    if((perc < 0.0f && perc > -percStep) || i == 0) {
                         HealthBarRenderers[i].sprite = halfHeart;
                     }
                     else {

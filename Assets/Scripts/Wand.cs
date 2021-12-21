@@ -21,7 +21,7 @@ public class Wand : MonoBehaviour
     /// </summary>
     public float chargingSpeed = 8.0f;
 
-    public Vector3 spellOffset = new Vector3(0.5f, -0.15f, 0.0f);
+    public Vector3 spellOffset = new Vector3(0.15f, -0.15f, 0.0f);
 
 
     public ParticleSystem chargingPS;

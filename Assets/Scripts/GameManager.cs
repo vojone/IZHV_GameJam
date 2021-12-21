@@ -18,6 +18,8 @@ public class GameManager : MonoBehaviour
 
     public bool gameStarted = false;
 
+    public bool gameWon = false;
+
     private bool gamePaused = false;
 
     public static GameManager Instance;
@@ -37,10 +39,7 @@ public class GameManager : MonoBehaviour
 
         gameStarted = false;
         gamePaused = false;
-
-        //WaitForUIManager
-        while(!UI.GetComponent<UIManager>().initialized) {
-        }
+        gameWon = false;
 
         TogglePause();
     }
@@ -61,29 +60,46 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(GetPrimaryPlayer().GetComponent<Player>().HP <= 0.0f && gameStarted && !gameLost) {
-            GameOver();
-        }
-    }
+
+
+   }
 
     public void Restart() {
+        gameStarted = true;
+        gamePaused = false;
+        gameWon = false;
+
         Scene scene = SceneManager.GetActiveScene();
         SceneManager.LoadScene(scene.name);
 
-        Start();
+        var player = Instantiate(playerPrefab, spawnPoint, Quaternion.identity);
+
+        player.GetComponent<Player>().mainTimeCheckpoint = mainTimeCheckpoint;
+        players.Add(player);
+
+        mainCamera.GetComponent<CameraController>().SetPlayer(player);
     }
 
-    public void GameOver() {
+    public void GameWon() {
         gameStarted = false;
-        gameLost = true;
+        gameWon = true;
 
         Pause();
 
-        //TODO
         Destroy(GetPrimaryPlayer());
         players.Clear();
+    }
 
-        Restart();
+    public void GameOver() {
+        if(gameStarted) {
+            gameStarted = false;
+            gameLost = true;
+
+            Pause();
+
+            Destroy(GetPrimaryPlayer());
+            players.Clear();
+        }
     }
 
     public void SetSpawnPoint(Vector3 position) {
@@ -119,6 +135,10 @@ public class GameManager : MonoBehaviour
         float closestDistance = float.MaxValue;
 
         foreach(var player in players) {
+            if(player == null) {
+                continue;
+            }
+
             var plPos = player.transform.position;
             var dist = (plPos - position).magnitude;
             
@@ -134,6 +154,10 @@ public class GameManager : MonoBehaviour
     }
 
     public void StartGame() {
+        if(gameLost || gameWon) {
+            return;
+        }
+
         gameStarted = true;
         TogglePause();
     }
@@ -169,5 +193,13 @@ public class GameManager : MonoBehaviour
         gamePaused = false;
 
         UI.GetComponent<UIManager>().setUIPage(1);
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if(other.gameObject.CompareTag("Player"))
+        {   
+            GameWon();
+        }
     }
 }

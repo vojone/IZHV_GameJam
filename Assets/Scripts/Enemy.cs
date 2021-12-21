@@ -7,7 +7,7 @@ public class Enemy : MonoBehaviour
 
     public float HP = 10.0f;
 
-    public float speed = 1.0f;
+    public float speed = 1.5f;
 
     public string dmgType = "Bite";
 
@@ -15,9 +15,9 @@ public class Enemy : MonoBehaviour
 
     public float damage = 1.0f;
 
-    public float visionRadius = 4.0f; 
+    public float visionRadius = 4.5f; 
 
-    public float defTimeToWake = 3.0f;
+    public float defTimeToWake = 1.5f;
 
     public bool moveEnable = true;
 
@@ -53,9 +53,19 @@ public class Enemy : MonoBehaviour
 
     private bool takingDmg = false;
 
+    private bool isConfused = false;
+
+    private bool warns = false;
+
     private bool dying = false;
 
-    public float timeToDie = 0.6f;
+    public float spriteStateDelay = 1.0f;
+
+    public float currentspriteStateDelay;
+
+    public float timeToDie = 1.0f;
+
+    public float maxSafeDistance = 0.5f;
 
     // Start is called before the first frame update
     void Start()
@@ -70,6 +80,8 @@ public class Enemy : MonoBehaviour
         stateShowR.sprite = null;
 
         curTimeToLostTarget = TimeToLostTarget;
+
+        currentspriteStateDelay = spriteStateDelay;
     }
 
     // Update is called once per frame
@@ -99,11 +111,38 @@ public class Enemy : MonoBehaviour
             Move();
             Animate();
             UpdateCharacter();
+            UpdateState();
+        }
+    }
+
+
+    void UpdateState() {
+        if(isConfused) {
+            currentspriteStateDelay -= Time.deltaTime;
+        }
+
+        if(currentspriteStateDelay <= 0.0f) {
+            isConfused = false;
+            currentspriteStateDelay = spriteStateDelay;
+        }
+
+        if(isConfused) {
+            stateShowR.sprite = confusedSprite;
+        }
+        else if(warns) {
+            stateShowR.sprite = warningSprite;
+        }
+        else {
+            stateShowR.sprite = null;
         }
     }
 
 
     Vector2 GetMoveVector() {
+        if(attackTarget == null) {
+            return Vector2.zero;
+        }
+
         return attackTarget.transform.position - transform.position;
     }
 
@@ -182,6 +221,9 @@ public class Enemy : MonoBehaviour
         float distance;
         attackTarget = GameManager.Instance.NearestPlayer(transform.position, out distance);
 
+        warns = false;
+        isConfused = false;
+
         if(attackTarget != null) {
             //Debug.Log("Player found");
             if(distance < visionRadius || !distanceLimited) {
@@ -189,41 +231,40 @@ public class Enemy : MonoBehaviour
 
                 timeToWake -= Time.deltaTime;
 
-                if(timeToWake < 0.0f || !distanceLimited) {
+                if(timeToWake < 0.0f || !distanceLimited || distance < maxSafeDistance) {
                     //Debug.Log("I am going to kill player");
                     hasTarget = true;
                     timeToWake = defTimeToWake;
-                    stateShowR.sprite = null;
+                    warns = false;
                 }
                 else {
-                    stateShowR.sprite = warningSprite;
+                    if(!hasTarget) {
+                        warns = true;
+                    }
                 }
             }
             else {
                 //Debug.Log("Distance is too big");
-    
                 if(curTimeToLostTarget <= 0.0f) {
+                    //I lost target
                     hasTarget = false;
                     timeToWake = defTimeToWake;
                     curTimeToLostTarget = TimeToLostTarget;
-                    stateShowR.sprite = null;
-                }
-                else {
-                    stateShowR.sprite = confusedSprite;
+                    isConfused = true;
                 }
             }
         }
         else {
+            //There is not any player to kill
             hasTarget = false;
             timeToWake = defTimeToWake;
             curTimeToLostTarget = TimeToLostTarget;
-            stateShowR.sprite = null;
         }
     } 
 
     void Animate() {
         animator.SetFloat("Speed", movementSpeed);
         animator.SetBool("Attacking", attacking);
-        animator.SetBool("TakingDmg", takingDmg);
+        //animator.SetBool("TakingDmg", takingDmg);
     }
 }
