@@ -58,7 +58,7 @@ public class Doors : MonoBehaviour
 
     bool GetInteractsState() {
         bool result = true;
-        bool first = true;
+        bool onlyone = true;
 
         if((InteractsNOR.Length == 0 && !wasNANDchosen) ||
            (InteractsNAND.Length == 0 && wasNANDchosen)) {
@@ -67,32 +67,29 @@ public class Doors : MonoBehaviour
 
         if(wasNANDchosen) {
             for(int i = 0; i < InteractsNAND.Length; i++) {
-                if(first) {
+                if(i == 0) {
                     result = InteractsNAND[i].GetComponent<InteractiveElement>().GetState();
                 }
                 else {
                     result = Utils.AND(result, InteractsNAND[i].GetComponent<InteractiveElement>().GetState());
+                    onlyone = false;
                 }
-
-                first = false;
             }
-
-            result = !result;
         }
         else {
             for(int i = 0; i < InteractsNOR.Length; i++) {
-                if(first) {
+                if(i == 0) {
                     result = InteractsNOR[i].GetComponent<InteractiveElement>().GetState();
                 }
                 else {
                     result = Utils.OR(result, InteractsNOR[i].GetComponent<InteractiveElement>().GetState());
+                    onlyone = false;
                 }
-
-                first = false;
             }
-
-            result = !result;
         }
+
+        if(!onlyone)
+            result = !result;
 
         return result;
     }
