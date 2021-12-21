@@ -20,8 +20,8 @@ ___
 
 ___
 
-![From game](https://github.com/vojone/IZHV_GameJam/blob/master/InGame1.png)
-![From game](https://github.com/vojone/IZHV_GameJam/blob/master/InGame2.png)
+![From game](https://github.com/vojone/IZHV_GameJam/blob/master/Screenshots/InGame1.png)
+![From game](https://github.com/vojone/IZHV_GameJam/blob/master/Screenshots/InGame2.png)
 
 ## About
 
@@ -33,7 +33,7 @@ It is only demo version, so there is only one handmade level to demostrate game 
 
 Hint: Levers in main room (in green circles on picture below) are connected to NOR logical function and the **off state demonstrates lever on left side**.  
 
-![From game](https://github.com/vojone/IZHV_GameJam/blob/master/Hint.png)
+![Hint](https://github.com/vojone/IZHV_GameJam/blob/master/Screenshots/Hint.png)
 
 
 ## Version
@@ -63,7 +63,7 @@ There are two UI modes:
 
 Control state of game or show other information by clicking buttons.
 
-![From game](https://github.com/vojone/IZHV_GameJam/blob/master/MainMenu.png)
+![From game](https://github.com/vojone/IZHV_GameJam/blob/master/Screenshots/MainMenu.png)
 
 2. InGame UI
 
