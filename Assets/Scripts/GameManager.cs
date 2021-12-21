@@ -70,7 +70,9 @@ public class GameManager : MonoBehaviour
 
         Pause();
 
+        //TODO
         Destroy(GetPrimaryPlayer());
+        players.Clear();
 
         Restart();
     }

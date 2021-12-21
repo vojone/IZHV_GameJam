@@ -109,7 +109,7 @@ public class UIManager : MonoBehaviour
     }
 
     void UpdateTime() {
-        if(GameManager.Instance.GetPrimaryPlayer()) {
+        if(GameManager.Instance.GetPrimaryPlayer() != null) {
             float totalTime = GameManager.Instance.GetPrimaryPlayer().GetComponent<Player>().timeLoopLength;
             float current = GameManager.Instance.GetPrimaryPlayer().GetComponent<Player>().remainingTime;
 
@@ -131,7 +131,7 @@ public class UIManager : MonoBehaviour
 
 
     void UpdateHealthBar() {
-        if(GameManager.Instance.GetPrimaryPlayer()) {
+        if(GameManager.Instance.GetPrimaryPlayer() != null) {
             float totalHP = GameManager.Instance.GetPrimaryPlayer().GetComponent<Player>().totalHP;
             float current = GameManager.Instance.GetPrimaryPlayer().GetComponent<Player>().HP;
 
