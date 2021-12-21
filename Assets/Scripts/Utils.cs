@@ -33,11 +33,11 @@ public class Utils : MonoBehaviour
         return Random.value <= truePossibility ? true : false;
     }
 
-    public static bool NAND(bool a, bool b) {
-        return !(a && b);
+    public static bool AND(bool a, bool b) {
+        return a && b;
     }
 
-    public static bool NOR(bool a, bool b) {
-        return !(a || b);
+    public static bool OR(bool a, bool b) {
+        return a || b;
     }
 }

@@ -71,11 +71,13 @@ public class Doors : MonoBehaviour
                     result = InteractsNAND[i].GetComponent<InteractiveElement>().GetState();
                 }
                 else {
-                    result = Utils.NAND(result, InteractsNAND[i].GetComponent<InteractiveElement>().GetState());
+                    result = Utils.AND(result, InteractsNAND[i].GetComponent<InteractiveElement>().GetState());
                 }
 
                 first = false;
             }
+
+            result = !result;
         }
         else {
             for(int i = 0; i < InteractsNOR.Length; i++) {
@@ -83,11 +85,13 @@ public class Doors : MonoBehaviour
                     result = InteractsNOR[i].GetComponent<InteractiveElement>().GetState();
                 }
                 else {
-                    result = Utils.NOR(result, InteractsNOR[i].GetComponent<InteractiveElement>().GetState());
+                    result = Utils.OR(result, InteractsNOR[i].GetComponent<InteractiveElement>().GetState());
                 }
 
                 first = false;
             }
+
+            result = !result;
         }
 
         return result;

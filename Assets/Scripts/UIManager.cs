@@ -148,7 +148,7 @@ public class UIManager : MonoBehaviour
             activeUIindex = index;
             if(index >= 0) {
                 UIs[index].SetActive(true);
-                Debug.Log(index);
+                //Debug.Log(index);
             }
         }
     }
