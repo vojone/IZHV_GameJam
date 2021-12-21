@@ -60,9 +60,8 @@ public class CameraController : MonoBehaviour
 
     void LateUpdate()
     {
-        currentSpeed = adjustSpeed*player.GetComponent<Player>().speed;
-
         if(player != null) {
+            currentSpeed = adjustSpeed*player.GetComponent<Player>().speed;
             centeredPosition = GetCenteredPosition();
             diff = GetDiff();
 

@@ -9903,12 +9903,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1e465bc06e10f044ba6c78fa7b4b5cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeCheckPoint: {x: 2, y: 1, z: 1}
+  timeCheckPoint: {fileID: 0}
+  mainTimeCheckpoint: {fileID: 0}
   HP: 10
+  totalHP: 10
   speed: 2
-  timeLoopLength: 60
+  timeLoopLength: 30
   disappearAnimLength: 1.5
   appearAnimLength: 1.5
+  remainingTime: 0
   bounce: 8
   chargingSpellHandicap: 3
   headingRight: 1

@@ -13,7 +13,9 @@ public class Player : MonoBehaviour
     /// <summary>
     /// Number of hits that can player get before he dies.
     /// </summary>
-    public float HP = 10.0f;
+    public float HP;
+
+    public float totalHP = 10.0f;
 
     /// <summary>
     /// Speed of player movement.
@@ -26,7 +28,7 @@ public class Player : MonoBehaviour
 
     public float appearAnimLength = 1.5f;
 
-    private float remainingTime;
+    public float remainingTime;
 
     /// <summary>
     /// Bounce when player collides with something.
@@ -102,6 +104,10 @@ public class Player : MonoBehaviour
         controls.Player.Charge.performed += ctx => chargingSpell = true;
         controls.Player.Charge.canceled += ctx => Fire();
     }
+
+    private void OnPause() {
+        GameManager.Instance.TogglePause();
+    }
  
     private void OnEnable() {
         controls.Player.Enable();
@@ -163,6 +169,8 @@ public class Player : MonoBehaviour
         originalScale = transform.localScale;
 
         currentCursorInd = 0;
+
+        HP = totalHP;
     }
 
     void Update() {

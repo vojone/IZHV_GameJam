@@ -13,11 +13,15 @@ public class GameManager : MonoBehaviour
 
     public GameObject mainCamera;
 
-    private bool gameLost = false;
+    public bool gameLost = false;
 
-    private bool gameStarted = false;
+    public bool gameStarted = false;
+
+    private bool gamePaused = false;
 
     public static GameManager Instance;
+
+    public GameObject UI;
 
     private List<GameObject> players = new List<GameObject>();
     // Start is called before the first frame update
@@ -30,7 +34,9 @@ public class GameManager : MonoBehaviour
 
         mainCamera.GetComponent<CameraController>().SetPlayer(player);
 
-        gameStarted = true;
+        gameStarted = false;
+        gamePaused = false;
+        TogglePause();
     }
 
     void Awake()
@@ -49,11 +55,24 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if(GetPrimaryPlayer().GetComponent<Player>().HP <= 0.0f && gameStarted && !gameLost) {
+            GameOver();
+        }
+    }
+
+    public void Restart() {
+        Start();
     }
 
     public void GameOver() {
+        gameStarted = false;
+        gameLost = true;
 
+        Pause();
+
+        Destroy(GetPrimaryPlayer());
+
+        Restart();
     }
 
     public void SetSpawnPoint(Vector3 position) {
@@ -68,6 +87,17 @@ public class GameManager : MonoBehaviour
         mainCamera.GetComponent<CameraController>().setFastMode(true);
         mainCamera.GetComponent<CameraController>().Adjust(true);
         mainCamera.GetComponent<CameraController>().setFastMode(false);
+    }
+
+
+    public GameObject GetPrimaryPlayer() {
+        GameObject primary = null;
+
+        if(players.Count > 0) {
+            primary = players[0];
+        }
+
+        return primary;
     }
 
 
@@ -90,5 +120,39 @@ public class GameManager : MonoBehaviour
         distance = closestDistance;
 
         return nearest;
+    }
+
+    public void StartGame() {
+        gameStarted = true;
+        TogglePause();
+    }
+
+    public void OnExit() {
+        #if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+        #else
+            Application.Quit();
+        #endif
+    }
+
+    public void TogglePause() {
+        if(gamePaused && gameStarted) {
+            Resume();
+        }
+        else {
+            Pause();
+        }
+    }
+
+    void Pause() {
+        Time.timeScale = 0;
+        gamePaused = true;
+        UI.GetComponent<UIManager>().setUIPage(0);
+    }
+
+    void Resume() {
+        Time.timeScale = 1;
+        gamePaused = false;
+        UI.GetComponent<UIManager>().setUIPage(1);
     }
 }
