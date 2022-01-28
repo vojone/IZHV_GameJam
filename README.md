@@ -1,6 +1,12 @@
 # Stuck
 ___
 
+## Downloads
+
++ Build of submitted version with .exe: https://drive.google.com/file/d/1ObsvKLh9P1WcjJpzwbDJSMRwKji8x074/view?usp=sharing
++ WebGL build of submitted version: https://drive.google.com/file/d/1cMZLVgclUeoRQdzJb_PMpEIVHzntiBT0/view?usp=sharing
++ Presentation for this game (with images and videos) in .pptx: https://drive.google.com/file/d/1czVoh86GSE7WLKzdtzRFP9nco5wJ1jfc/view?usp=sharing 
+
 ## Outline
 
 + [About](#about)
